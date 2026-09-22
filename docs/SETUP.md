@@ -120,6 +120,43 @@ Vercel project so nothing is left serving a stale copy.
 
 ---
 
+## ⚠ Before you ever change the nameservers
+
+**Mail and DNS live in different places.** The mailboxes are Hostinger's; the
+DNS that tells the world about them is Vercel's. Move the nameservers without
+carrying the mail records across and email stops dead, silently, with no error
+anywhere — the mailbox keeps existing and simply never receives anything.
+
+This has already happened once. On 2026-09-18 the nameservers were pointed at
+Vercel for the website, and `fnb@theroyalseminentlounge.com` went dark for four
+days before anyone connected the two events.
+
+These seven records live in the Vercel zone and must exist in whatever zone is
+authoritative:
+
+| name | type | priority | value |
+|---|---|---|---|
+| `@` | MX | 5 | `mx1.hostinger.com` |
+| `@` | MX | 10 | `mx2.hostinger.com` |
+| `@` | TXT | — | `v=spf1 include:_spf.mail.hostinger.com ~all` |
+| `_dmarc` | TXT | — | `v=DMARC1; p=none` |
+| `hostingermail-a._domainkey` | CNAME | — | `hostingermail-a.dkim.mail.hostinger.com` |
+| `hostingermail-b._domainkey` | CNAME | — | `hostingermail-b.dkim.mail.hostinger.com` |
+| `hostingermail-c._domainkey` | CNAME | — | `hostingermail-c.dkim.mail.hostinger.com` |
+
+Plus Resend's three on the `send` subdomain, or account confirmation and
+password-reset emails stop instead.
+
+Check before and after any nameserver change:
+
+```bash
+curl -s "https://dns.google/resolve?name=theroyalseminentlounge.com&type=MX"
+```
+
+Two records means mail works. None means it does not, whatever the panel says.
+
+---
+
 ## Domain and DNS
 
 Registered at **OnlyDomains**, not Hostinger — only the nameservers point here.
