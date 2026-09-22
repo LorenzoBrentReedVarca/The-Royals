@@ -1316,15 +1316,25 @@
       ];
       var wa = 'https://wa.me/' + loc.whatsapp + '?text=' + encodeURIComponent(lines.join('\n'));
 
+      /* Opened here, not inside the timer below. A popup is only permitted
+         while the click that caused it is still the active user gesture, and
+         Safari has withdrawn that long before a 900ms timer fires. The pause
+         is stagecraft; the handoff is the booking itself, so it goes first.
+         The note below still carries the link regardless, because passing
+         'noopener' makes window.open return null whether it opened or was
+         blocked — there is no way to tell the two apart, so the guest is
+         always given a way through. */
+      window.open(wa, '_blank', 'noopener');
+
       setTimeout(function () {
         if (btnSend) { btnSend.classList.remove('is-busy'); btnSend.textContent = 'Confirm request'; }
         showNote(form, 'ok',
           '<strong>Request received, ' + String(d.name).split(' ')[0].replace(/</g, '&lt;') + '.</strong><br>' +
           'Your table request for <b>' + prettyDate(d.date) + '</b> at <b>' + prettyTime(d.time) + '</b> has been prepared. ' +
           'Our host team confirms every booking personally on WhatsApp — a new tab has opened so you can send it through. ' +
-          'If it did not open, call us on <a href="tel:' + loc.phoneRaw + '" style="color:var(--gold)">' + loc.phone + '</a>.'
+          'If nothing opened, <a href="' + wa + '" target="_blank" rel="noopener" style="color:var(--gold)">send it here</a>, ' +
+          'or call us on <a href="tel:' + loc.phoneRaw + '" style="color:var(--gold)">' + loc.phone + '</a>.'
         );
-        window.open(wa, '_blank', 'noopener');
         try { form.reset(); } catch (err) {}
       }, 900);
     });
@@ -1334,6 +1344,12 @@
 
   /* ==================================================================
      18. CONTACT / SIMPLE FORMS
+
+     Posted to /api/contact, which passes it to Resend and on to the venue's
+     inbox. The thank-you is shown only once the server has confirmed the
+     send: a form that thanks you for a message nobody received is worse
+     than no form at all, because the guest stops waiting for a reply that
+     was never coming.
      ================================================================== */
   safe('simpleForms', function () {
     $$('form[data-simple-form]').forEach(function (form) {
@@ -1344,45 +1360,141 @@
           showNote(form, 'err', 'Please check the highlighted fields and try again.');
           return;
         }
-        var btn = $('[type="submit"]', form);
+
+        var btn   = $('[type="submit"]', form);
         var label = btn ? btn.textContent : '';
-        if (btn) { btn.classList.add('is-busy'); btn.textContent = 'Sending…'; }
+        if (btn) { btn.classList.add('is-busy'); btn.disabled = true; btn.textContent = 'Sending…'; }
 
         // Quote back the hours and number of the branch the visitor is viewing.
         var loc = currentLocation();
 
-        setTimeout(function () {
-          if (btn) { btn.classList.remove('is-busy'); btn.textContent = label; }
-          showNote(form, 'ok',
-            '<strong>Thank you — your message is on its way.</strong><br>' +
-            'Our team replies within a few hours during opening times (' + hoursLabel(loc) + ', Dubai). ' +
-            'For anything urgent, WhatsApp us on <a href="https://wa.me/' + loc.whatsapp + '" style="color:var(--gold)">' + loc.phone + '</a>.'
+        function value(name) {
+          var el = form.elements[name];
+          return el ? String(el.value || '').trim() : '';
+        }
+        function restore() {
+          if (!btn) return;
+          btn.classList.remove('is-busy');
+          btn.disabled = false;
+          btn.textContent = label;
+        }
+        function reachUs(lead) {
+          showNote(form, 'err',
+            '<strong>' + lead + '</strong><br>' +
+            'Nothing you wrote has been lost. Try again in a moment, or reach us on ' +
+            '<a href="https://wa.me/' + loc.whatsapp + '" style="color:var(--gold)">WhatsApp</a> ' +
+            'or <a href="tel:' + loc.phoneRaw + '" style="color:var(--gold)">' + loc.phone + '</a>.'
           );
-          form.reset();
-        }, 900);
+        }
+
+        fetch('/api/contact', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name:    value('name'),
+            email:   value('email'),
+            phone:   value('phone'),
+            subject: value('subject'),
+            message: value('message'),
+            company: value('company'),
+            consent: !!(form.elements.consent && form.elements.consent.checked)
+          })
+        }).then(function (res) {
+          restore();
+          if (res.ok) {
+            showNote(form, 'ok',
+              '<strong>Thank you — your message is on its way.</strong><br>' +
+              'Our team replies within a few hours during opening times (' + hoursLabel(loc) + ', Dubai). ' +
+              'For anything urgent, WhatsApp us on <a href="https://wa.me/' + loc.whatsapp + '" style="color:var(--gold)">' + loc.phone + '</a>.'
+            );
+            form.reset();
+            return;
+          }
+          return res.json().then(function (d) { return d; }, function () { return {}; })
+            .then(function (data) { reachUs(data.error || 'The message could not be sent.'); });
+        }).catch(function () {
+          restore();
+          reachUs('The message could not be sent.');
+        });
       });
     });
   });
 
   /* ==================================================================
      19. NEWSLETTER
+
+     The list lives in a Supabase table the browser may insert into and
+     cannot read back — see supabase/migrations for the policy. These two
+     values are also in assets/js/auth.js. Duplicating them beats a third
+     script tag on eight pages for the sake of one URL, and the key is
+     publishable: it is meant to be read by the browser and grants only
+     what Row Level Security allows.
      ================================================================== */
+  var SUPABASE = {
+    url: 'https://atzkuodhsooszjavlqgw.supabase.co',
+    key: 'sb_publishable_D5Dxssbqx-1c_BVEWWSGLA_zFYEGtrD'
+  };
+
   safe('newsletter', function () {
     $$('form[data-newsletter]').forEach(function (form) {
       on(form, 'submit', function (e) {
         e.preventDefault();
+
         var input = $('input[type="email"]', form);
         var field = input ? input.closest('.field') : null;
+        var trap  = $('input[name="company"]', form);
+        var btn   = $('[type="submit"]', form);
+
+        function settle(label) {
+          if (!btn) return;
+          btn.disabled = false;
+          btn.textContent = label;
+          setTimeout(function () { btn.textContent = 'Join'; }, 3200);
+        }
+
+        function accepted() {
+          input.value = '';
+          input.placeholder = 'You are on the guest list.';
+          settle('Subscribed ✓');
+        }
+
+        function failed() {
+          if (btn) { btn.disabled = false; btn.textContent = 'Join'; }
+          setError(field, 'That did not go through. Please try again in a moment.');
+        }
+
         if (!input || !RX.email.test(input.value.trim())) {
           setError(field, 'Enter a valid email address.');
           return;
         }
         clearError(field);
-        var btn = $('[type="submit"]', form);
-        if (btn) btn.textContent = 'Subscribed ✓';
-        input.value = '';
-        input.placeholder = 'You are on the guest list.';
-        setTimeout(function () { if (btn) btn.textContent = 'Join'; }, 3200);
+
+        /* Something filled in a field no person can see. Give it the same
+           success it would have got anyway and send nothing: a bot told it
+           failed simply comes back differently. */
+        if (trap && trap.value) { accepted(); return; }
+
+        if (btn) { btn.disabled = true; btn.textContent = 'Joining…'; }
+
+        fetch(SUPABASE.url + '/rest/v1/newsletter_subscribers', {
+          method: 'POST',
+          headers: {
+            'apikey': SUPABASE.key,
+            'Authorization': 'Bearer ' + SUPABASE.key,
+            'Content-Type': 'application/json',
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            email: input.value.trim().toLowerCase(),
+            source: location.pathname
+          })
+        }).then(function (res) {
+          /* 409 is the unique index refusing a second copy of an address.
+             From the guest's side that is not a failure — they are on the
+             list, which is the whole of what they asked for. */
+          if (res.ok || res.status === 409) accepted();
+          else failed();
+        }).catch(failed);
       });
     });
   });

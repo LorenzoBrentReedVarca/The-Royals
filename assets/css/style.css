@@ -1498,6 +1498,18 @@ p { text-wrap: pretty; }
 .form { display: grid; gap: 1.15rem; }
 .form__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.15rem; }
 
+/* Honeypot wrapper on the newsletter forms. Off-screen rather than
+   display:none, because a bot worth the name skips what it can see is
+   hidden. aria-hidden and tabindex="-1" in the markup keep it away from
+   anyone reading the page with a keyboard or a screen reader. */
+.hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .field { position: relative; display: grid; gap: .5rem; }
 .field label {
   font-size: .6rem;

@@ -415,6 +415,14 @@
         <h4>Guest list</h4>
         <p class="small">Table drops, guest DJs and event nights — straight to your inbox.</p>
         <form class="form mt-2" data-newsletter novalidate>
+          <!-- Honeypot. Positioned off-screen rather than hidden with display,
+               which the cruder bots know to skip, and taken out of the tab
+               order and the accessibility tree so no guest ever meets it.
+               Anything that arrives with this filled in is dropped. -->
+          <div class="hp" aria-hidden="true">
+            <label for="nl-company">Company</label>
+            <input type="text" id="nl-company" name="company" tabindex="-1" autocomplete="off">
+          </div>
           <div class="field">
             <label for="nl-email">Email address</label>
             <input type="email" id="nl-email" name="email" placeholder="you@example.com" autocomplete="email">
