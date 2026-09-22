@@ -20,3 +20,6 @@ yarn-error.log*
 *.log
 
 .vercel
+
+# Hostinger: the real config lives outside public_html and never in git
+royals-config.php

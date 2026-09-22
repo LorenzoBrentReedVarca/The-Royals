@@ -1,0 +1,144 @@
+# ==========================================================================
+# THE ROYALS — Apache / LiteSpeed configuration
+#
+# This file replaces vercel.json. Everything that file did — clean URLs, the
+# canonical host, cache policy, security headers and the two vanity paths —
+# is rebuilt here, because Hostinger reads .htaccess and knows nothing about
+# vercel.json.
+#
+# vercel.json is deliberately still in the repository. Deleting it before the
+# domain has finished moving would strip those same rules from the Vercel
+# deployment that is still serving the site. Remove it once DNS has settled.
+#
+# Order matters throughout: the first rule to match and stop wins.
+# ==========================================================================
+
+Options -Indexes
+DirectoryIndex index.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# --------------------------------------------------------------------------
+# 1. One canonical address
+#
+# https, no www. Two rules rather than one because a request can be wrong in
+# both ways at once, and chaining them would send the visitor through two
+# redirects instead of one.
+# --------------------------------------------------------------------------
+RewriteCond %{HTTPS} !=on
+RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+RewriteRule ^ https://theroyalseminentlounge.com%{REQUEST_URI} [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^www\. [NC]
+RewriteRule ^ https://theroyalseminentlounge.com%{REQUEST_URI} [R=301,L]
+
+# --------------------------------------------------------------------------
+# 2. Nothing hidden gets served
+#
+# Hostinger's git deploy puts the whole repository inside public_html, so the
+# documentation, the SQL and the Supabase config would otherwise be readable
+# by anyone who guessed the path.
+#
+# These are RewriteRules rather than RedirectMatch on purpose. Redirect and
+# RewriteRule belong to different modules that run in different phases, so a
+# RedirectMatch can fire against the URL as it stood before a rewrite rather
+# than after — which would have 404'd /api/contact a few lines below this.
+# Staying inside one module makes the order on the page the order that runs.
+#
+# .well-known stays open, or the SSL certificate cannot renew.
+# --------------------------------------------------------------------------
+RewriteCond %{REQUEST_URI} !^/\.well-known/
+RewriteRule (^|/)\. - [R=404,L]
+
+RewriteRule ^(docs|supabase)/ - [R=404,L]
+RewriteRule \.(md|sql|toml|log)$ - [R=404,L]
+
+# Nothing under /api is public except the one endpoint. This also stops
+# api/contact.js, the Vercel version kept for now, being served as source.
+RewriteCond %{REQUEST_URI} ^/api/
+RewriteCond %{REQUEST_URI} !^/api/contact/?$
+RewriteCond %{REQUEST_URI} !^/api/contact\.php$
+RewriteRule ^ - [R=404,L]
+
+# --------------------------------------------------------------------------
+# 3. The contact form
+#
+# Kept at /api/contact, without the extension, so the URL survived the move
+# from a Vercel function to a PHP script and the JavaScript did not change.
+# --------------------------------------------------------------------------
+RewriteRule ^api/contact/?$ api/contact.php [L]
+
+# --------------------------------------------------------------------------
+# 4. Clean URLs
+#
+# What Vercel's cleanUrls did: /about.html is redirected to /about, and
+# /about is then served from about.html without a second round trip. The
+# THE_REQUEST test reads the original request line, so it only fires for a
+# URL the visitor actually typed — not for the internal rewrite below, which
+# would otherwise loop.
+# --------------------------------------------------------------------------
+RewriteCond %{THE_REQUEST} \s/+index\.html[\s?] [NC]
+RewriteRule ^ / [R=301,L]
+
+RewriteCond %{THE_REQUEST} \s/+(.+?)\.html[\s?] [NC]
+RewriteRule ^ /%1 [R=301,L]
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.+?)/$ /$1 [R=301,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^(.+)$ $1.html [L]
+
+# --------------------------------------------------------------------------
+# 5. Vanity paths, as temporary redirects — the destinations may yet change
+# --------------------------------------------------------------------------
+RewriteRule ^book/?$ /reservations [R=302,L]
+RewriteRule ^whatsapp/?$ https://wa.me/971542921626 [R=302,L]
+
+</IfModule>
+
+# --------------------------------------------------------------------------
+# 6. The door that isn't there
+# --------------------------------------------------------------------------
+ErrorDocument 404 /404.html
+
+# --------------------------------------------------------------------------
+# 7. Caching, matching what vercel.json set
+#
+# Images carry a ?v= stamp in the markup, so they can be held for a year and
+# a replaced file is never served stale. Everything else must revalidate: the
+# menu photographs and the hero video get replaced in place, and the CSS and
+# JS carry no stamp of their own.
+# --------------------------------------------------------------------------
+<IfModule mod_setenvif.c>
+  SetEnvIf Request_URI "^/assets/img/"             ROYALS_CACHE_LONG
+  SetEnvIf Request_URI "^/assets/(video|menu)/"    ROYALS_CACHE_SHORT
+  SetEnvIf Request_URI "^/assets/(css|js)/"        ROYALS_CACHE_SHORT
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=()"
+  Header always set Strict-Transport-Security "max-age=63072000; includeSubDomains; preload"
+
+  Header set Cache-Control "public, max-age=31536000, immutable" env=ROYALS_CACHE_LONG
+  Header set Cache-Control "public, max-age=0, must-revalidate"  env=ROYALS_CACHE_SHORT
+
+  # Pages themselves are never held: the markup changes with every deploy.
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# --------------------------------------------------------------------------
+# 8. Compression — Vercel did this without being asked; Apache does not
+# --------------------------------------------------------------------------
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
