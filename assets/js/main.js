@@ -1500,6 +1500,43 @@
   });
 
   /* ==================================================================
+     20. PASSWORD REVEAL
+
+     Only the account page carries password fields, so this finds nothing
+     anywhere else and costs nothing there. It lives here rather than in
+     auth.js because auth.js waits on the Supabase SDK arriving over the
+     network, and being able to read back what you just typed should not
+     depend on that landing.
+
+     The attribute is data-reveal-pw, not data-reveal: the latter is the
+     scroll-animation hook, and these buttons would have been swept into it
+     and animated out of sight.
+     ================================================================== */
+  safe('passwordReveal', function () {
+    $$('[data-reveal-pw]').forEach(function (btn) {
+      var input = document.getElementById(btn.getAttribute('aria-controls'));
+      if (!input) return;
+
+      on(btn, 'click', function () {
+        var shown   = input.type === 'text';
+        var focused = document.activeElement === input;
+        var caret   = focused ? input.selectionStart : null;
+
+        input.type = shown ? 'password' : 'text';
+        btn.textContent = shown ? 'Show' : 'Hide';
+        btn.setAttribute('aria-pressed', shown ? 'false' : 'true');
+
+        /* Switching the type sends the caret to the end in some browsers,
+           which is maddening if you were fixing one character mid-word. */
+        if (focused) {
+          input.focus();
+          try { input.setSelectionRange(caret, caret); } catch (e) {}
+        }
+      });
+    });
+  });
+
+  /* ==================================================================
      21. MENU PDF — open in a new tab, everywhere
      ================================================================== */
   safe('menuLinks', function () {

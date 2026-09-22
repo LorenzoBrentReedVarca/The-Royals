@@ -1582,6 +1582,34 @@ p { text-wrap: pretty; }
 
 .field__hint { font-size: .68rem; color: var(--text-mute); letter-spacing: .05em; }
 
+/* Show/hide on password fields.
+
+   A text button rather than an eye icon: the sprite carries no eye, and
+   "Show" says plainly what it does — an icon would need explaining to anyone
+   reading the page with a screen reader. The button sits inside the input's
+   own box, so the field still reads as one control. */
+.reveal { position: relative; }
+.reveal input { padding-right: 4.4rem; }
+.reveal__btn {
+  position: absolute;
+  top: 50%;
+  right: .5rem;
+  transform: translateY(-50%);
+  padding: .4rem .5rem;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: .6rem;
+  font-weight: 500;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  transition: color .3s var(--ease);
+}
+.reveal__btn:hover,
+.reveal__btn:focus-visible { color: var(--gold); }
+
 /* Segmented control (guest count / table type) */
 .seg { display: flex; flex-wrap: wrap; gap: .5rem; }
 .seg input { position: absolute; opacity: 0; pointer-events: none; }

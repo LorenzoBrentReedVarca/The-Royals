@@ -177,7 +177,10 @@
           </div>
           <div class="field">
             <label for="si-password">Password <span class="req">*</span></label>
-            <input type="password" id="si-password" name="password" autocomplete="current-password" placeholder="••••••••" required>
+            <div class="reveal">
+              <input type="password" id="si-password" name="password" autocomplete="current-password" placeholder="••••••••" required>
+              <button class="reveal__btn" type="button" data-reveal-pw aria-controls="si-password" aria-pressed="false">Show</button>
+            </div>
             <span class="field__error"></span>
             <span class="field__hint">
               <a href="#" data-auth-show="reset" style="color:var(--gold)">Forgotten your password?</a>
@@ -217,9 +220,20 @@
           </div>
           <div class="field">
             <label for="su-password">Password <span class="req">*</span></label>
-            <input type="password" id="su-password" name="password" autocomplete="new-password" placeholder="At least 8 characters" required>
+            <div class="reveal">
+              <input type="password" id="su-password" name="password" autocomplete="new-password" placeholder="At least 8 characters" required>
+              <button class="reveal__btn" type="button" data-reveal-pw aria-controls="su-password" aria-pressed="false">Show</button>
+            </div>
             <span class="field__error"></span>
             <span class="field__hint">Eight characters or more.</span>
+          </div>
+          <div class="field">
+            <label for="su-confirm">Confirm password <span class="req">*</span></label>
+            <div class="reveal">
+              <input type="password" id="su-confirm" name="confirm" autocomplete="new-password" placeholder="••••••••" required>
+              <button class="reveal__btn" type="button" data-reveal-pw aria-controls="su-confirm" aria-pressed="false">Show</button>
+            </div>
+            <span class="field__error"></span>
           </div>
           <div class="form__actions">
             <button class="btn btn--gold" type="submit" data-busy="Creating…">Create account <svg viewBox="0 0 24 24"><use href="#i-arrow"></use></svg></button>
@@ -258,13 +272,19 @@
         <form class="form mt-2" id="newpass-form" novalidate>
           <div class="field">
             <label for="np-password">New password <span class="req">*</span></label>
-            <input type="password" id="np-password" name="password" autocomplete="new-password" placeholder="At least 8 characters" required>
+            <div class="reveal">
+              <input type="password" id="np-password" name="password" autocomplete="new-password" placeholder="At least 8 characters" required>
+              <button class="reveal__btn" type="button" data-reveal-pw aria-controls="np-password" aria-pressed="false">Show</button>
+            </div>
             <span class="field__error"></span>
             <span class="field__hint">Eight characters or more.</span>
           </div>
           <div class="field">
             <label for="np-confirm">Confirm new password <span class="req">*</span></label>
-            <input type="password" id="np-confirm" name="confirm" autocomplete="new-password" placeholder="••••••••" required>
+            <div class="reveal">
+              <input type="password" id="np-confirm" name="confirm" autocomplete="new-password" placeholder="••••••••" required>
+              <button class="reveal__btn" type="button" data-reveal-pw aria-controls="np-confirm" aria-pressed="false">Show</button>
+            </div>
             <span class="field__error"></span>
           </div>
           <div class="form__actions">

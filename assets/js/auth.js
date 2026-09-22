@@ -275,10 +275,12 @@
       var name = $('#su-name', form).value.trim();
       var email = $('#su-email', form).value.trim();
       var password = $('#su-password', form).value;
+      var confirm  = $('#su-confirm', form).value;
 
       if (!name) return note('err', 'Please tell us your name.');
       if (!email) return note('err', 'Please enter your email address.');
       if (password.length < 8) return note('err', 'Please choose a password of at least 8 characters.');
+      if (password !== confirm) return note('err', 'Those two passwords do not match.');
 
       clearNotes();
       busy(form, true);
