@@ -12,7 +12,7 @@
 
    ------------------------------------------------------------------------
    THE CONNECTION
-   Project: atzkuodhsooszjavlqgw (ap-northeast-2)
+   Project: oprbqvvtephbtwxqrops, owned by theroyalseminent@gmail.com
    Dashboard -> Project Settings -> API is where both values below come from.
 
    The publishable key is meant to be public and is safe in client-side code
@@ -28,8 +28,8 @@
   'use strict';
 
   var SUPABASE = {
-    url: 'https://atzkuodhsooszjavlqgw.supabase.co',
-    anonKey: 'sb_publishable_D5Dxssbqx-1c_BVEWWSGLA_zFYEGtrD'
+    url: 'https://oprbqvvtephbtwxqrops.supabase.co',
+    anonKey: 'sb_publishable_Vns42KhVjgvjI9ujim-oZQ_6gWhlRdw'
   };
 
   var SDK = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js';

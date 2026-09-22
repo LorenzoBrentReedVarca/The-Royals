@@ -15,7 +15,7 @@ where to find it, not what it is.
 | Domain registrar | **OnlyDomains** (back-end registrar shows as Instra) |
 | DNS | **Hostinger** |
 | Mailboxes | **Hostinger** email, on the domain itself |
-| Guest accounts | Supabase, project ref `atzkuodhsooszjavlqgw`, named "Royals" |
+| Guest accounts | Supabase, project ref `oprbqvvtephbtwxqrops`, named "Royals" |
 | Outgoing email | Resend, sending as `no-reply@theroyalseminentlounge.com` |
 | Contact form | `api/contact.php` → Resend → `CONTACT_INBOX` |
 | Guest list | Supabase table `newsletter_subscribers`, insert-only |
@@ -154,7 +154,7 @@ second half.
 
 ## Guest accounts (Supabase)
 
-Project ref `atzkuodhsooszjavlqgw`. The publishable key sits in
+Project ref `oprbqvvtephbtwxqrops`. The publishable key sits in
 `assets/js/auth.js` and is safe there — it is meant to be read by the browser
 and grants only what Row Level Security allows. The **secret** key
 (`sb_secret_…`) must never appear in any file the browser can load.
@@ -172,7 +172,7 @@ Configured state:
 **Supabase does not read it**. Changing that file does nothing until:
 
 ```bash
-supabase config push --project-ref atzkuodhsooszjavlqgw
+supabase config push --project-ref oprbqvvtephbtwxqrops
 ```
 
 ---
@@ -353,7 +353,7 @@ Applying the migration — it must be done **before** the form is live, or every
 signup gets an error:
 
 ```bash
-supabase db push --project-ref atzkuodhsooszjavlqgw
+supabase db push --project-ref oprbqvvtephbtwxqrops
 ```
 
 Or paste the file into the SQL Editor in the dashboard, which needs no local
@@ -398,14 +398,14 @@ logs, and delete the verified domain. A **Sending access** key can only send.
 
 ```bash
 # does signup send mail?
-curl -s -X POST "https://atzkuodhsooszjavlqgw.supabase.co/auth/v1/signup" \
+curl -s -X POST "https://oprbqvvtephbtwxqrops.supabase.co/auth/v1/signup" \
   -H "apikey: <publishable key from assets/js/auth.js>" \
   -H "Content-Type: application/json" \
   -d '{"email":"you@example.com","password":"a-long-enough-password"}'
 
 # where do confirmation links land?
 curl -s -o /dev/null -w "%{redirect_url}\n" \
-  "https://atzkuodhsooszjavlqgw.supabase.co/auth/v1/verify?token=probe&type=signup" \
+  "https://oprbqvvtephbtwxqrops.supabase.co/auth/v1/verify?token=probe&type=signup" \
   -H "apikey: <publishable key>"
 ```
 

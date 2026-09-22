@@ -1431,8 +1431,8 @@
      what Row Level Security allows.
      ================================================================== */
   var SUPABASE = {
-    url: 'https://atzkuodhsooszjavlqgw.supabase.co',
-    key: 'sb_publishable_D5Dxssbqx-1c_BVEWWSGLA_zFYEGtrD'
+    url: 'https://oprbqvvtephbtwxqrops.supabase.co',
+    key: 'sb_publishable_Vns42KhVjgvjI9ujim-oZQ_6gWhlRdw'
   };
 
   safe('newsletter', function () {
