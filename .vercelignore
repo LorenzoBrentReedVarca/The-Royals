@@ -1,0 +1,15 @@
+# Files that belong in the repository but not on the web.
+#
+# On Hostinger .htaccess refuses these outright. Vercel has no equivalent, so
+# they are simply never uploaded to it. Without this, docs/SETUP.md — which
+# names every service the venue runs on — is readable by anyone who guesses
+# the path.
+#
+# Only Vercel reads this file. Hostinger's git deploy ignores it, which is
+# why .htaccess still has to do the same job on that side.
+
+docs
+supabase
+.htaccess
+api/contact.php
+royals-config.example.php
