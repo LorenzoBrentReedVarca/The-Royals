@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Page not found | The Royals</title>
+<meta name="robots" content="noindex, follow">
+<meta name="theme-color" content="#050505">
+<script>document.documentElement.classList.add('js');</script>
+
+<!-- Served for any unmatched URL, so every path here is root-relative: this
+     page can be rendered at any depth and the assets must still resolve. -->
+<link rel="icon" href="/assets/img/favicon.png?v=74408001" type="image/png" sizes="64x64">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png?v=4471e634">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+
+<style>
+  /* Scoped to this page. The site stylesheet supplies the tokens and the
+     buttons; only the centring is particular to a dead end. */
+  .nf {
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(2.5rem, 8vw, 6rem) var(--gutter);
+    text-align: center;
+  }
+  .nf__inner { max-width: 44rem; }
+  .nf__logo  { width: 168px; height: auto; margin: 0 auto 2rem; display: block; }
+  .nf__code {
+    font-family: var(--font-display);
+    font-size: clamp(3.5rem, 12vw, 6rem);
+    line-height: 1;
+    letter-spacing: .06em;
+    margin: 0 0 1rem;
+    background: var(--gold-grad);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .nf__rule {
+    width: 96px; height: 1px; margin: 0 auto 1.75rem;
+    background: rgba(212, 175, 55, .32);
+  }
+  .nf h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 4vw, 2.25rem);
+    line-height: 1.25;
+    color: var(--gold-bright);
+    margin: 0 0 1rem;
+  }
+  .nf p {
+    font-family: var(--font-serif);
+    font-size: clamp(1.05rem, 2.2vw, 1.25rem);
+    line-height: 1.65;
+    color: var(--text);
+    margin: 0 auto 2.25rem;
+    max-width: 34rem;
+  }
+  .nf__actions {
+    display: flex; flex-wrap: wrap; gap: .85rem;
+    justify-content: center; margin-bottom: 2.5rem;
+  }
+  .nf__links {
+    font-family: var(--font-body);
+    font-size: .8rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--text-mute);
+  }
+  .nf__links a { color: var(--text-soft); text-decoration: none; }
+  .nf__links a:hover, .nf__links a:focus-visible { color: var(--gold); }
+  .nf__links span { opacity: .4; padding: 0 .55rem; }
+</style>
+</head>
+<body style="background:var(--black)">
+
+<main class="nf">
+  <div class="nf__inner">
+
+    <a href="/" aria-label="The Royals — home">
+      <img class="nf__logo" src="/assets/img/logo-royals.png?v=1" width="168" height="101" alt="The Royals">
+    </a>
+
+    <p class="nf__code">404</p>
+    <div class="nf__rule"></div>
+
+    <h1>This door isn&rsquo;t on the list</h1>
+
+    <p>
+      The page you were looking for has either moved or never existed.
+      The night, however, is still very much on &mdash; doors at 9:00&nbsp;PM.
+    </p>
+
+    <div class="nf__actions">
+      <a class="btn btn--gold btn--lg" href="/">Back to the homepage</a>
+      <a class="btn btn--ghost btn--lg" href="/reservations">Reserve a table</a>
+    </div>
+
+    <p class="nf__links">
+      <a href="/menu">Menu</a><span>&middot;</span><a href="/events">Events</a><span>&middot;</span><a href="/gallery">Gallery</a><span>&middot;</span><a href="/contact">Contact</a>
+    </p>
+
+  </div>
+</main>
+
+</body>
+</html>

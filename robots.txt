@@ -1,0 +1,10 @@
+# The Royals — theroyalseminentlounge.com
+
+User-agent: *
+Allow: /
+
+# A sign-in form has nothing in it worth indexing, and the reset link that
+# lands here carries a token in the URL.
+Disallow: /account
+
+Sitemap: https://theroyalseminentlounge.com/sitemap.xml
