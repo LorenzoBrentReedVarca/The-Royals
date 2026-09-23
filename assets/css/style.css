@@ -1610,6 +1610,48 @@ p { text-wrap: pretty; }
 .reveal__btn:hover,
 .reveal__btn:focus-visible { color: var(--gold); }
 
+/* The Instagram strip on the gallery page.
+
+   Deliberately not styled to look like photographs. Instagram blocks
+   hotlinking and expires its image URLs, so a thumbnail here would either
+   break or be a stock picture standing in for real footage — which is the
+   thing this strip exists to avoid. It reads as a row of marked links. */
+.ig-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: .9rem;
+  margin-top: 2.25rem;
+}
+.ig-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  padding: 1.5rem 1rem;
+  background: var(--glass);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+  color: var(--text-soft);
+  text-decoration: none;
+  transition: border-color .35s var(--ease), background .35s var(--ease),
+              transform .35s var(--ease), color .35s var(--ease);
+}
+.ig-card svg { width: 22px; height: 22px; color: var(--gold); }
+.ig-card span {
+  font-family: var(--font-body);
+  font-size: .62rem;
+  font-weight: 500;
+  letter-spacing: .2em;
+}
+.ig-card:hover,
+.ig-card:focus-visible {
+  background: var(--glass-strong);
+  border-color: var(--line);
+  color: var(--gold);
+  transform: translateY(-3px);
+}
+
 /* Segmented control (guest count / table type) */
 .seg { display: flex; flex-wrap: wrap; gap: .5rem; }
 .seg input { position: absolute; opacity: 0; pointer-events: none; }
