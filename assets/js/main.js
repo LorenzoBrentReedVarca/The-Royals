@@ -786,7 +786,7 @@
     // submenu links to. Venue is the place, Performance is what happens on it.
     var GROUPS = {
       venue:       ['venue', 'bar', 'crowd'],
-      performance: ['shows', 'dj', 'celebrations']
+      performance: ['shows', 'dance', 'dj', 'celebrations']
     };
 
     function filterButtons() { return $$('[data-filter], [data-filter-group]'); }
@@ -915,10 +915,21 @@
       box.setAttribute('aria-hidden', 'true');
     }
 
+    /* A tile carrying data-ig has the venue's own footage behind it, so the
+       click belongs to Instagram rather than to the lightbox: the clip is the
+       thing worth seeing, and the photograph on the tile only stands in for
+       it until real stills arrive. Opened straight from the click, while the
+       gesture is still the browser's to honour. */
+    function activate(it) {
+      var post = it.getAttribute('data-ig');
+      if (post) { window.open(post, '_blank', 'noopener'); return; }
+      open(visible().indexOf(it));
+    }
+
     items.forEach(function (it) {
-      on(it, 'click', function () { open(visible().indexOf(it)); });
+      on(it, 'click', function () { activate(it); });
       on(it, 'keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(visible().indexOf(it)); }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(it); }
       });
     });
 
