@@ -346,10 +346,15 @@
 
   <!-- ===================== LIVE SINGING ON INSTAGRAM =====================
        The grid above is stock photography; these are the venue's own clips.
-       Instagram blocks hotlinking and expires its image URLs, so there is no
-       honest way to show a thumbnail here — hence a marked strip of links
-       rather than tiles pretending to be photographs. Replace this with real
-       gallery items the moment the venue sends the footage stills. -->
+
+       Rendered with Instagram's embed.js rather than self-hosted thumbnails:
+       their CDN serves an image once and a login wall thereafter, so anything
+       we downloaded would break. The script draws each card in the visitor's
+       own browser, where that limit does not apply.
+
+       The cards come in Instagram's white styling, which is the price of
+       showing real previews at all. Replace the whole section with proper
+       gallery tiles the moment the venue sends the footage stills. -->
   <section class="section section--tight">
     <div class="shell">
       <div data-reveal>
@@ -358,55 +363,47 @@
         <p class="lead center">
           Recent nights, filmed on the floor. Each one opens on Instagram.
         </p>
-        <div class="ig-strip">
-          <a class="ig-card" href="https://www.instagram.com/p/DbgBTigt6ZH/"
-             target="_blank" rel="noopener"
-             aria-label="Watch Live Singing clip 1 on Instagram">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"></use></svg>
-            <span>01</span>
-          </a>
-          <a class="ig-card" href="https://www.instagram.com/p/DavUcB-v8Tv/"
-             target="_blank" rel="noopener"
-             aria-label="Watch Live Singing clip 2 on Instagram">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"></use></svg>
-            <span>02</span>
-          </a>
-          <a class="ig-card" href="https://www.instagram.com/p/DaH3pBDNls1/"
-             target="_blank" rel="noopener"
-             aria-label="Watch Live Singing clip 3 on Instagram">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"></use></svg>
-            <span>03</span>
-          </a>
-          <a class="ig-card" href="https://www.instagram.com/p/DZ4sbUCtX79/"
-             target="_blank" rel="noopener"
-             aria-label="Watch Live Singing clip 4 on Instagram">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"></use></svg>
-            <span>04</span>
-          </a>
-          <a class="ig-card" href="https://www.instagram.com/p/DZi0byWo2HQ/"
-             target="_blank" rel="noopener"
-             aria-label="Watch Live Singing clip 5 on Instagram">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"></use></svg>
-            <span>05</span>
-          </a>
-          <a class="ig-card" href="https://www.instagram.com/p/DaOjl4nNssq/"
-             target="_blank" rel="noopener"
-             aria-label="Watch Live Singing clip 6 on Instagram">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"></use></svg>
-            <span>06</span>
-          </a>
-          <a class="ig-card" href="https://www.instagram.com/p/DZEVFuUoJe8/"
-             target="_blank" rel="noopener"
-             aria-label="Watch Live Singing clip 7 on Instagram">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"></use></svg>
-            <span>07</span>
-          </a>
-          <a class="ig-card" href="https://www.instagram.com/p/DbVE17vtl-1/"
-             target="_blank" rel="noopener"
-             aria-label="Watch Live Singing clip 8 on Instagram">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"></use></svg>
-            <span>08</span>
-          </a>
+        <div class="ig-embeds">
+          <blockquote class="instagram-media"
+                      data-instgrm-permalink="https://www.instagram.com/p/DbgBTigt6ZH/"
+                      data-instgrm-version="14">
+            <a href="https://www.instagram.com/p/DbgBTigt6ZH/" target="_blank" rel="noopener">Watch clip 1 on Instagram</a>
+          </blockquote>
+          <blockquote class="instagram-media"
+                      data-instgrm-permalink="https://www.instagram.com/p/DavUcB-v8Tv/"
+                      data-instgrm-version="14">
+            <a href="https://www.instagram.com/p/DavUcB-v8Tv/" target="_blank" rel="noopener">Watch clip 2 on Instagram</a>
+          </blockquote>
+          <blockquote class="instagram-media"
+                      data-instgrm-permalink="https://www.instagram.com/p/DaH3pBDNls1/"
+                      data-instgrm-version="14">
+            <a href="https://www.instagram.com/p/DaH3pBDNls1/" target="_blank" rel="noopener">Watch clip 3 on Instagram</a>
+          </blockquote>
+          <blockquote class="instagram-media"
+                      data-instgrm-permalink="https://www.instagram.com/p/DZ4sbUCtX79/"
+                      data-instgrm-version="14">
+            <a href="https://www.instagram.com/p/DZ4sbUCtX79/" target="_blank" rel="noopener">Watch clip 4 on Instagram</a>
+          </blockquote>
+          <blockquote class="instagram-media"
+                      data-instgrm-permalink="https://www.instagram.com/p/DZi0byWo2HQ/"
+                      data-instgrm-version="14">
+            <a href="https://www.instagram.com/p/DZi0byWo2HQ/" target="_blank" rel="noopener">Watch clip 5 on Instagram</a>
+          </blockquote>
+          <blockquote class="instagram-media"
+                      data-instgrm-permalink="https://www.instagram.com/p/DaOjl4nNssq/"
+                      data-instgrm-version="14">
+            <a href="https://www.instagram.com/p/DaOjl4nNssq/" target="_blank" rel="noopener">Watch clip 6 on Instagram</a>
+          </blockquote>
+          <blockquote class="instagram-media"
+                      data-instgrm-permalink="https://www.instagram.com/p/DZEVFuUoJe8/"
+                      data-instgrm-version="14">
+            <a href="https://www.instagram.com/p/DZEVFuUoJe8/" target="_blank" rel="noopener">Watch clip 7 on Instagram</a>
+          </blockquote>
+          <blockquote class="instagram-media"
+                      data-instgrm-permalink="https://www.instagram.com/p/DbVE17vtl-1/"
+                      data-instgrm-version="14">
+            <a href="https://www.instagram.com/p/DbVE17vtl-1/" target="_blank" rel="noopener">Watch clip 8 on Instagram</a>
+          </blockquote>
         </div>
       </div>
     </div>
@@ -544,5 +541,8 @@
 </div>
 
 <script src="assets/js/main.js"></script>
+<!-- Draws the Instagram cards above. Without it each blockquote
+     stays a plain link, which is a fair fallback. -->
+<script async src="https://www.instagram.com/embed.js"></script>
 </body>
 </html>

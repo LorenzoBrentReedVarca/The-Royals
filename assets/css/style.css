@@ -1610,46 +1610,51 @@ p { text-wrap: pretty; }
 .reveal__btn:hover,
 .reveal__btn:focus-visible { color: var(--gold); }
 
-/* The Instagram strip on the gallery page.
+/* The Instagram embeds on the gallery page.
 
-   Deliberately not styled to look like photographs. Instagram blocks
-   hotlinking and expires its image URLs, so a thumbnail here would either
-   break or be a stock picture standing in for real footage — which is the
-   thing this strip exists to avoid. It reads as a row of marked links. */
-.ig-strip {
+   Instagram's embed.js renders each card in the visitor's own browser. We
+   cannot host the thumbnails ourselves: their CDN serves an image on the
+   first request and a login wall on every one after, so anything downloaded
+   would break within the day.
+
+   The cards arrive in Instagram's own white styling. That is the cost of
+   showing real previews on a black page, and it is why this section should
+   become ordinary gallery tiles as soon as the venue sends the stills. */
+.ig-embeds {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-  gap: .9rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
   margin-top: 2.25rem;
+  align-items: start;
 }
-.ig-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: .6rem;
-  padding: 1.5rem 1rem;
-  background: var(--glass);
+
+/* embed.js writes inline max-width, min-width and margins straight onto the
+   element, so overriding them is the only way to hold the grid. */
+.ig-embeds .instagram-media {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+/* Before the script lands, and for anyone whose blocker stops it arriving at
+   all, each card is still a working link — styled so it reads as intended
+   rather than as something that failed. */
+.ig-embeds blockquote:not(.instagram-media-rendered) {
+  padding: 1.75rem 1.25rem;
   border: 1px solid var(--line-soft);
   border-radius: var(--radius);
-  color: var(--text-soft);
-  text-decoration: none;
-  transition: border-color .35s var(--ease), background .35s var(--ease),
-              transform .35s var(--ease), color .35s var(--ease);
+  background: var(--glass);
+  text-align: center;
 }
-.ig-card svg { width: 22px; height: 22px; color: var(--gold); }
-.ig-card span {
-  font-family: var(--font-body);
-  font-size: .62rem;
-  font-weight: 500;
-  letter-spacing: .2em;
-}
-.ig-card:hover,
-.ig-card:focus-visible {
-  background: var(--glass-strong);
-  border-color: var(--line);
+.ig-embeds blockquote a {
   color: var(--gold);
-  transform: translateY(-3px);
+  text-decoration: none;
+  font-family: var(--font-body);
+  font-size: .68rem;
+  font-weight: 500;
+  letter-spacing: .16em;
+  text-transform: uppercase;
 }
 
 /* Segmented control (guest count / table type) */
