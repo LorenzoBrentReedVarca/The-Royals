@@ -21,7 +21,6 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://images.unsplash.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Jost:wght@200;300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
@@ -158,7 +157,7 @@
 
   <!-- ===================== PAGE HERO ===================== -->
   <section class="page-hero">
-    <div class="page-hero__bg" style="background-image:url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1800&q=80')"></div>
+    <div class="page-hero__bg" style="background-image:url('assets/img/venue/stage-full.jpg')"></div>
     <div class="shell">
       <!-- One page, three openings. The header submenu links to ?view=venue and
            ?view=performance, and the matching block is revealed below. Without
@@ -175,7 +174,7 @@
       <div data-view-copy="performance"
            data-view-eyebrow-text="Live dance performances"
            data-view-heading-html="Where movement <span class=&quot;script gold-text&quot;>becomes art</span>"
-           data-view-bg="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1800&q=80" hidden>
+           data-view-bg="assets/img/venue/floor-full.jpg" hidden>
         <p class="lead">Experience captivating live dance performances that bring energy, elegance
           and artistry to the heart of The Royals.</p>
         <p class="view-copy__more">Our performances are thoughtfully curated to complement the lounge's
@@ -189,7 +188,7 @@
       <div data-view-copy="venue"
            data-view-eyebrow-text="The venue"
            data-view-heading-html="The room at <span class=&quot;script gold-text&quot;>The Royals</span>"
-           data-view-bg="https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=1800&q=80" hidden>
+           data-view-bg="assets/img/venue/room-full.jpg" hidden>
         <p class="lead">The lounge, the bar and the setting, on the ground floor of the Grand Excelsior
           Hotel in Al Barsha.</p>
       </div>
@@ -207,132 +206,58 @@
         <button class="tab" type="button" data-filter-group="performance">Performances</button>
         <button class="tab" type="button" data-filter="shows">Live Singing</button>
         <button class="tab" type="button" data-filter="crowd">The room</button>
-        <button class="tab" type="button" data-filter="dj">DJ &amp; sound</button>
         <button class="tab" type="button" data-filter="bar">The bar</button>
-        <button class="tab" type="button" data-filter="celebrations">Celebrations</button>
         <button class="tab" type="button" data-filter="venue">Al Barsha</button>
       </div>
 
       <div class="gallery" data-reveal>
 
-        <div class="gallery__item is-tall" tabindex="0" role="button" data-cat="shows" data-title="Centre Stage" data-ig="https://www.instagram.com/p/DbgBTigt6ZH/" data-caption="Live Singing"
-             data-full="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=75" alt="Performer on stage under spotlights" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>Centre Stage</h4><p>Live Singing</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-instagram"></use></svg></span></div>
+        <div class="gallery__item is-wide" tabindex="0" role="button" data-cat="shows" data-title="The Stage" data-ig="https://www.instagram.com/p/DbgBTigt6ZH/" data-caption="Live Singing"
+             data-full="assets/img/venue/stage-full.jpg">
+          <img src="assets/img/venue/stage-tile.jpg" alt="The Royals stage and dance floor under the chandeliers" loading="lazy" decoding="async" width="800" height="450">
+          <div class="gallery__cap"><div><h4>The Stage</h4><p>Live Singing</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-instagram"></use></svg></span></div>
         </div>
 
-        <div class="gallery__item" tabindex="0" role="button" data-cat="crowd" data-title="Full House" data-caption="The room"
-             data-full="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=800&q=75" alt="Packed dance floor" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>Full House</h4><p>The room</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
+        <div class="gallery__item" tabindex="0" role="button" data-cat="shows" data-title="Stage Lights" data-ig="https://www.instagram.com/p/DZi0byWo2HQ/" data-caption="Live Singing"
+             data-full="assets/img/venue/stage-lit-full.jpg">
+          <img src="assets/img/venue/stage-lit-tile.jpg" alt="The stage screen lit over the mirrored dance floor" loading="lazy" decoding="async" width="800" height="450">
+          <div class="gallery__cap"><div><h4>Stage Lights</h4><p>Live Singing</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-instagram"></use></svg></span></div>
         </div>
 
-        <div class="gallery__item" tabindex="0" role="button" data-cat="bar" data-title="Signature Cocktails" data-caption="The bar"
-             data-full="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=800&q=75" alt="Cocktails on the bar top" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>Signature Cocktails</h4><p>The bar</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
+        <div class="gallery__item" tabindex="0" role="button" data-cat="dance" data-title="The Dance Floor" data-ig="https://www.instagram.com/p/DaOjl4nNssq/" data-caption="Performances"
+             data-full="assets/img/venue/floor-full.jpg">
+          <img src="assets/img/venue/floor-tile.jpg" alt="The dance floor seen from the tables" loading="lazy" decoding="async" width="800" height="450">
+          <div class="gallery__cap"><div><h4>The Dance Floor</h4><p>Performances</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-instagram"></use></svg></span></div>
         </div>
 
-        <div class="gallery__item is-wide" tabindex="0" role="button" data-cat="dj" data-title="Booth View" data-caption="DJ &amp; sound"
-             data-full="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=1200&q=75" alt="DJ performing to the room" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>Booth View</h4><p>DJ &amp; sound</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
+        <div class="gallery__item" tabindex="0" role="button" data-cat="dance" data-title="The Floor" data-ig="https://www.instagram.com/p/DZEVFuUoJe8/" data-caption="Performances"
+             data-full="assets/img/venue/mandala-full.jpg">
+          <img src="assets/img/venue/mandala-tile.jpg" alt="The dance floor with the mandala wall and bar behind" loading="lazy" decoding="async" width="800" height="450">
+          <div class="gallery__cap"><div><h4>The Floor</h4><p>Performances</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-instagram"></use></svg></span></div>
         </div>
 
-        <div class="gallery__item" tabindex="0" role="button" data-cat="dance" data-title="Choreography" data-ig="https://www.instagram.com/p/DaOjl4nNssq/" data-caption="Performances"
-             data-full="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&fit=crop&w=800&q=75" alt="Dancers mid-routine" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>Choreography</h4><p>Performances</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-instagram"></use></svg></span></div>
+        <div class="gallery__item is-wide" tabindex="0" role="button" data-cat="bar" data-title="The Bar" data-caption="The bar"
+             data-full="assets/img/venue/bar-full.jpg">
+          <img src="assets/img/venue/bar-tile.jpg" alt="The lit bar seen across the dance floor" loading="lazy" decoding="async" width="800" height="450">
+          <div class="gallery__cap"><div><h4>The Bar</h4><p>The bar</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
         </div>
 
-        <div class="gallery__item" tabindex="0" role="button" data-cat="celebrations" data-title="Birthday Table" data-caption="Celebrations"
-             data-full="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=800&q=75" alt="Guests celebrating" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>Birthday Table</h4><p>Celebrations</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
+        <div class="gallery__item" tabindex="0" role="button" data-cat="venue" data-title="The Room" data-caption="Al Barsha"
+             data-full="assets/img/venue/room-full.jpg">
+          <img src="assets/img/venue/room-tile.jpg" alt="The room from the side, stained glass windows and arches" loading="lazy" decoding="async" width="800" height="450">
+          <div class="gallery__cap"><div><h4>The Room</h4><p>Al Barsha</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
         </div>
 
-        <div class="gallery__item is-tall" tabindex="0" role="button" data-cat="dance" data-title="The Lead" data-ig="https://www.instagram.com/p/DZEVFuUoJe8/" data-caption="Performances"
-             data-full="https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?auto=format&fit=crop&w=800&q=75" alt="Lead dancer in motion" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>The Lead</h4><p>Performances</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-instagram"></use></svg></span></div>
+        <div class="gallery__item" tabindex="0" role="button" data-cat="crowd" data-title="The Booths" data-caption="The room"
+             data-full="assets/img/venue/booths-full.jpg">
+          <img src="assets/img/venue/booths-tile.jpg" alt="Tiered velvet booths beneath The Royals sign" loading="lazy" decoding="async" width="800" height="450">
+          <div class="gallery__cap"><div><h4>The Booths</h4><p>The room</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
         </div>
 
-        <div class="gallery__item" tabindex="0" role="button" data-cat="crowd" data-title="Peak Hour" data-caption="The room"
-             data-full="https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?auto=format&fit=crop&w=800&q=75" alt="Crowd under club lighting" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>Peak Hour</h4><p>The room</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
-        </div>
-
-        <div class="gallery__item" tabindex="0" role="button" data-cat="bar" data-title="Behind the Bar" data-caption="The bar"
-             data-full="https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1572116469696-31de0f17cc34?auto=format&fit=crop&w=800&q=75" alt="Bar interior" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>Behind the Bar</h4><p>The bar</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
-        </div>
-
-        <div class="gallery__item" tabindex="0" role="button" data-cat="shows" data-title="Fusion Set" data-ig="https://www.instagram.com/p/DavUcB-v8Tv/" data-caption="Live Singing"
-             data-full="https://images.unsplash.com/photo-1545128485-c400e7702796?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1545128485-c400e7702796?auto=format&fit=crop&w=800&q=75" alt="Dance performance on stage" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>Fusion Set</h4><p>Live Singing</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-instagram"></use></svg></span></div>
-        </div>
-
-        <div class="gallery__item is-wide" tabindex="0" role="button" data-cat="crowd" data-title="The Whole Room" data-caption="The room"
-             data-full="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=1200&q=75" alt="Wide view of the crowd" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>The Whole Room</h4><p>The room</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
-        </div>
-
-        <div class="gallery__item" tabindex="0" role="button" data-cat="bar" data-title="Bottle Service" data-caption="The bar"
-             data-full="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=800&q=75" alt="Drinks being prepared" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>Bottle Service</h4><p>The bar</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
-        </div>
-
-        <div class="gallery__item" tabindex="0" role="button" data-cat="celebrations" data-title="Confetti Drop" data-caption="Celebrations"
-             data-full="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?auto=format&fit=crop&w=800&q=75" alt="Celebration on the floor" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>Confetti Drop</h4><p>Celebrations</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
-        </div>
-
-        <div class="gallery__item" tabindex="0" role="button" data-cat="dj" data-title="Late Set" data-caption="DJ &amp; sound"
-             data-full="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?auto=format&fit=crop&w=800&q=75" alt="Club interior at night" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>Late Set</h4><p>DJ &amp; sound</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
-        </div>
-
-        <div class="gallery__item is-tall" tabindex="0" role="button" data-cat="crowd" data-title="Until Four" data-caption="The room"
-             data-full="https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1543007630-9710e4a00a20?auto=format&fit=crop&w=800&q=75" alt="Late night crowd" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>Until Four</h4><p>The room</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
-        </div>
-
-        <div class="gallery__item" tabindex="0" role="button" data-cat="shows" data-title="Live Vocals" data-ig="https://www.instagram.com/p/DZi0byWo2HQ/" data-caption="Live Singing"
-             data-full="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800&q=75" alt="Vocalist performing" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>Live Vocals</h4><p>Live Singing</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-instagram"></use></svg></span></div>
-        </div>
-
-        <div class="gallery__item" tabindex="0" role="button" data-cat="bar" data-title="The Pour" data-caption="The bar"
-             data-full="https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1536935338788-846bb9981813?auto=format&fit=crop&w=800&q=75" alt="Cocktail being poured" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>The Pour</h4><p>The bar</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
-        </div>
-
-        <div class="gallery__item" tabindex="0" role="button" data-cat="venue" data-title="Dubai by Night" data-caption="Al Barsha"
-             data-full="https://images.unsplash.com/photo-1546412414-e1885259563a?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1546412414-e1885259563a?auto=format&fit=crop&w=800&q=75" alt="Dubai skyline at night" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>Dubai by Night</h4><p>Al Barsha</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
-        </div>
-
-        <div class="gallery__item is-wide" tabindex="0" role="button" data-cat="venue" data-title="The City Outside" data-caption="Al Barsha"
-             data-full="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&w=1200&q=75" alt="Dubai skyline at night" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>The City Outside</h4><p>Al Barsha</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
-        </div>
-
-        <div class="gallery__item" tabindex="0" role="button" data-cat="shows" data-title="Encore" data-ig="https://www.instagram.com/p/DZ4sbUCtX79/" data-caption="Live Singing"
-             data-full="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1600&q=85">
-          <img src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=800&q=75" alt="Dancing under the lights" loading="lazy" decoding="async">
-          <div class="gallery__cap"><div><h4>Encore</h4><p>Live Singing</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-instagram"></use></svg></span></div>
+        <div class="gallery__item" tabindex="0" role="button" data-cat="crowd" data-title="Velvet Seating" data-caption="The room"
+             data-full="assets/img/venue/seating-full.jpg">
+          <img src="assets/img/venue/seating-tile.jpg" alt="Velvet banquette seating and inlaid tables" loading="lazy" decoding="async" width="800" height="450">
+          <div class="gallery__cap"><div><h4>Velvet Seating</h4><p>The room</p></div><span class="gallery__zoom"><svg viewBox="0 0 24 24"><use href="#i-zoom"></use></svg></span></div>
         </div>
 
       </div>
