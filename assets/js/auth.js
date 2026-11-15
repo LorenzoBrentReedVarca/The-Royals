@@ -2,13 +2,15 @@
    THE ROYALS — auth.js
    Guest accounts, backed by Supabase.
 
-   Runs on two pages and does a different job on each:
+   Runs on the account page only:
 
      account.html       sign in, create an account, recover a forgotten
                         password, and the signed-in card
-     reservations.html  fills the booking form in for a guest who is already
-                        signed in, and remembers their phone number for next
-                        time
+
+   wireBooking() below is dead. It filled the booking form in for a guest
+   who was already signed in and remembered their phone number, but
+   reservations.html was removed when bookings moved to WhatsApp. It is
+   guarded and never runs, and is kept for whenever a booking form returns.
 
    ------------------------------------------------------------------------
    THE CONNECTION

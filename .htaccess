@@ -94,8 +94,9 @@ RewriteRule ^(.+)$ $1.html [L]
 # --------------------------------------------------------------------------
 # 5. Vanity paths, as temporary redirects — the destinations may yet change
 # --------------------------------------------------------------------------
-RewriteRule ^book/?$ /reservations [R=302,L]
-RewriteRule ^whatsapp/?$ https://wa.me/971542921626 [R=302,L]
+RewriteRule ^book/?$ https://wa.me/971542921623 [R=302,L]
+RewriteRule ^reservations/?$ https://wa.me/971542921623 [R=302,L]
+RewriteRule ^whatsapp/?$ https://wa.me/971542921623 [R=302,L]
 
 </IfModule>
 
