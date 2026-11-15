@@ -52,7 +52,7 @@
       mapQuery: 'Grand Excelsior Hotel Al Barsha Dubai',
       phone: '+971 54 292 1626',
       phoneRaw: '+971542921626',
-      whatsapp: '971542921626',
+      whatsapp: '971542921623',
       open:  { hour: 21, minute: 0 },   // 9:00 PM
       close: { hour: 4,  minute: 0 },   // 4:00 AM, next day
       lastEntry: '3:00 AM',
