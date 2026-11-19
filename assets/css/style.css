@@ -2286,6 +2286,17 @@ main { position: relative; z-index: 2; }
   gap: clamp(.9rem, 2vw, 1.5rem);
 }
 
+/* Two reels rather than three. Left in the same grid so they inherit every
+   reel style, but held to two columns and a sane width — a 9:16 clip
+   stretched across half a desktop screen is a very tall video. */
+.reels--pair {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
 .reel {
   position: relative;
   margin: 0;

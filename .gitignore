@@ -23,3 +23,7 @@ yarn-error.log*
 
 # Hostinger: the real config lives outside public_html and never in git
 royals-config.php
+
+# Camera originals. The web versions beside them are what ships; these are
+# 50MB each and would bloat the repository and the deploy for nothing.
+assets/video/Royals*.mp4
