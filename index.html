@@ -121,16 +121,7 @@
     <nav class="nav" aria-label="Primary">
       <a class="nav__link" href="index.html">Home</a>
       <a class="nav__link" href="about.html">About</a>
-      <div class="nav__group">
-        <a class="nav__link nav__link--sub" href="gallery.html" aria-haspopup="true" aria-expanded="false">
-          Gallery
-          <svg class="nav__caret" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-right"></use></svg>
-        </a>
-        <div class="nav__menu" role="menu">
-          <a role="menuitem" href="gallery.html?view=venue">Venue</a>
-          <a role="menuitem" href="gallery.html?view=performance">Performances</a>
-        </div>
-      </div>
+      <a class="nav__link" href="gallery.html">Gallery</a>
       <a class="nav__link" href="menu.html" data-menu-link>Menu</a>
       <a class="nav__link" href="contact.html">Contact</a>
     </nav>
@@ -160,10 +151,6 @@
     <a class="drawer__link" href="index.html"><span>01</span>Home</a>
     <a class="drawer__link" href="about.html"><span>02</span>About</a>
     <a class="drawer__link" href="gallery.html"><span>03</span>Gallery</a>
-    <div class="drawer__subs">
-      <a class="drawer__sub" href="gallery.html?view=venue">Venue</a>
-      <a class="drawer__sub" href="gallery.html?view=performance">Performances</a>
-    </div>
     <a class="drawer__link" href="menu.html" data-menu-link><span>04</span>Menu</a>
     <a class="drawer__link" href="https://wa.me/971542921623?text=Hi%20The%20Royals%2C%20I%20would%20like%20to%20make%20a%20booking." data-loc-href="whatsapp" target="_blank" rel="noopener"><span>05</span>Reserve</a>
     <a class="drawer__link" href="contact.html"><span>06</span>Contact</a>
@@ -340,7 +327,7 @@
           <em>It is carefully crafted.</em></p>
       </div>
 
-      <div class="grid g-4">
+      <div class="grid g-3">
         <article class="tile" data-reveal data-delay="0">
           <img src="assets/img/venue/floor-tile.jpg" alt="The dance floor seen from the tables" loading="lazy" decoding="async">
           <span class="tile__kicker">01 — Stage</span>
@@ -349,25 +336,21 @@
         </article>
 
         <article class="tile" data-reveal data-delay=".08">
-          <img src="assets/img/venue/stage-lit-tile.jpg" alt="The stage screen lit blue above the dance floor" loading="lazy" decoding="async">
-          <span class="tile__kicker">02 — Sound</span>
-          <h3>International DJs</h3>
-          <p>Bollywood and Punjabi anthems woven through house, Afro and commercial sets on a crystal-clear rig.</p>
-        </article>
-
-        <article class="tile" data-reveal data-delay=".16">
           <video data-reel data-src="assets/video/reel-cocktails.mp4?v=01aee493"
                  poster="assets/img/reel-cocktails-poster.jpg?v=38788199"
                  muted loop playsinline preload="none"
                  aria-label="A bartender shaking a cocktail behind the lit bottle wall"></video>
-          <span class="tile__kicker">03 — Bar</span>
+          <span class="tile__kicker">02 — Bar</span>
           <h3>Signature Bar</h3>
           <p>Premium spirits, sharing bottles and a cocktail list built for the room. Full menu available as a PDF.</p>
         </article>
 
-        <article class="tile" data-reveal data-delay=".24">
-          <img src="assets/img/venue/seating-tile.jpg" alt="Velvet banquette seating and inlaid tables" loading="lazy" decoding="async">
-          <span class="tile__kicker">04 — Service</span>
+        <article class="tile" data-reveal data-delay=".16">
+          <video data-reel data-src="assets/video/reel-kitchen.mp4?v=6cb15ac5"
+                 poster="assets/img/reel-kitchen-poster.jpg?v=eb059e4a"
+                 muted loop playsinline preload="none"
+                 aria-label="A chef finishing a plated dish in the kitchen"></video>
+          <span class="tile__kicker">03 — Service</span>
           <h3>VIP Table Service</h3>
           <p>Hosted tables with a dedicated server, priority entry and the best sightlines to the stage.</p>
         </article>
