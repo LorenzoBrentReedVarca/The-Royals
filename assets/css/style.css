@@ -1140,7 +1140,8 @@ p { text-wrap: pretty; }
   isolation: isolate;
   transition: border-color .5s var(--ease), transform .55s var(--ease-out);
 }
-.tile img {
+.tile img,
+.tile video {
   position: absolute;
   inset: 0;
   z-index: -2;
@@ -1149,6 +1150,13 @@ p { text-wrap: pretty; }
   filter: grayscale(.55) brightness(.42);
   transform: scale(1.03);
   transition: transform .9s var(--ease-out), filter .7s var(--ease);
+}
+
+/* A tile backed by footage rather than a still. The stills are pushed well
+   down so a heading can sit over them; moving footage is the whole point of
+   the tile, so it is held much closer to its own colour. */
+.tile video {
+  filter: grayscale(.12) brightness(.66);
 }
 .tile::after {
   content: "";
@@ -1160,6 +1168,7 @@ p { text-wrap: pretty; }
 }
 .tile:hover { border-color: var(--line); transform: translateY(-6px); }
 .tile:hover img { transform: scale(1.12); filter: grayscale(.1) brightness(.55); }
+.tile:hover video { transform: scale(1.06); filter: grayscale(0) brightness(.82); }
 .tile:hover::after { background: linear-gradient(180deg, rgba(4,4,5,.1) 0%, rgba(20,14,2,.72) 60%, rgba(4,4,5,.94) 100%); }
 
 .tile__kicker {
@@ -2286,11 +2295,14 @@ main { position: relative; z-index: 2; }
   gap: clamp(.9rem, 2vw, 1.5rem);
 }
 
-/* Two reels rather than three. Left in the same grid so they inherit every
-   reel style, but held to two columns and a sane width — a 9:16 clip
-   stretched across half a desktop screen is a very tall video. */
-.reels--pair {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+/* Fewer than three reels. Left in the same grid so they inherit every reel
+   style, but each column is held to 300px and the row is centred: one clip
+   sits in the middle instead of hugging the left edge, two sit side by side,
+   and neither is stretched — a 9:16 clip spread across half a desktop
+   screen is a very tall video. */
+.reels--inset {
+  grid-template-columns: repeat(auto-fit, minmax(0, 300px));
+  justify-content: center;
   max-width: 640px;
   margin-left: auto;
   margin-right: auto;

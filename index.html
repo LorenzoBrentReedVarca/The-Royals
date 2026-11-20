@@ -356,7 +356,10 @@
         </article>
 
         <article class="tile" data-reveal data-delay=".16">
-          <img src="assets/img/venue/bar-tile.jpg" alt="The lit bar seen across the dance floor" loading="lazy" decoding="async">
+          <video data-reel data-src="assets/video/reel-cocktails.mp4?v=01aee493"
+                 poster="assets/img/reel-cocktails-poster.jpg?v=38788199"
+                 muted loop playsinline preload="none"
+                 aria-label="A bartender shaking a cocktail behind the lit bottle wall"></video>
           <span class="tile__kicker">03 — Bar</span>
           <h3>Signature Bar</h3>
           <p>Premium spirits, sharing bottles and a cocktail list built for the room. Full menu available as a PDF.</p>
@@ -432,29 +435,20 @@
 
     <!-- ===================== BEHIND THE SCENES =====================
          The venue's own footage. Kept out of the reels section above, which
-         is about what happens on the stage — a bartender and a kitchen are
-         neither pole dancing nor Sufi, and filing them there would have made
-         that section's own copy untrue. -->
+         is about what happens on the stage — a kitchen is neither pole
+         dancing nor Sufi, and filing it there would have made that section's
+         own copy untrue. The bar clip that used to run beside this one now
+         backs the Signature Bar tile up in #experience. -->
     <section class="section" id="craft">
       <div class="shell">
         <div class="section-head is-centered" data-reveal>
           <span class="eyebrow eyebrow--lg is-centered">Behind the scenes</span>
-          <h2>Mixed and cooked <span class="script gold-text">to order</span></h2>
-          <p class="lead">Every drink is built at the bar in front of you, and the kitchen cooks
-            each dish as it is called. Filmed on an ordinary night, with nothing staged.</p>
+          <h2>Cooked <span class="script gold-text">to order</span></h2>
+          <p class="lead">Nothing sits waiting under a lamp — the kitchen cooks each dish as
+            it is called. Filmed on an ordinary night, with nothing staged.</p>
         </div>
 
-        <div class="reels reels--pair" data-reveal>
-          <figure class="reel">
-            <video class="reel__video" data-reel data-src="assets/video/reel-cocktails.mp4?v=01aee493"
-                   poster="assets/img/reel-cocktails-poster.jpg?v=38788199"
-                   muted loop playsinline preload="none" aria-label="A bartender mixing a cocktail at the bar"></video>
-            <figcaption class="reel__cap">
-              <h3>The Bar</h3>
-              <p>Cocktails, made to order</p>
-            </figcaption>
-          </figure>
-
+        <div class="reels reels--inset" data-reveal>
           <figure class="reel">
             <video class="reel__video" data-reel data-src="assets/video/reel-kitchen.mp4?v=6cb15ac5"
                    poster="assets/img/reel-kitchen-poster.jpg?v=eb059e4a"
