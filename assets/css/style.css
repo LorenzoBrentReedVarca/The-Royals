@@ -523,8 +523,12 @@ p { text-wrap: pretty; }
 }
 
 .header::after {
-  -webkit-backdrop-filter: blur(16px) saturate(150%);
-  backdrop-filter: blur(16px) saturate(150%);
+  /* backdrop-filter re-reads and re-blurs whatever is behind the bar on every
+     frame of every scroll. Saturating it as well doubled that work for a
+     shift in colour that the tint above it hides, so the blur now runs on
+     its own and at a radius that is cheaper to gather. */
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
   /* feather the blur out on the same curve as the tint */
   -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 34%, rgba(0,0,0,.45) 68%, transparent 100%);
   mask-image: linear-gradient(180deg, #000 0%, #000 34%, rgba(0,0,0,.45) 68%, transparent 100%);
@@ -546,6 +550,21 @@ p { text-wrap: pretty; }
    of the gradient never changes, so the bar deepens rather than gaining an edge. */
 .header.is-stuck::before { opacity: 1; }
 .header.is-stuck::after  { opacity: 1; }
+
+/* A phone is the device least able to afford a live blur behind a fixed bar
+   and the one where it shows least, so there it is dropped for the denser
+   tint below — the same treatment browsers without backdrop-filter get. */
+@media (hover: none) {
+  .header::after { display: none; }
+  .header::before {
+    background: linear-gradient(180deg,
+      rgba(4, 4, 5, .94) 0%,
+      rgba(4, 4, 5, .82) 30%,
+      rgba(4, 4, 5, .52) 58%,
+      rgba(4, 4, 5, .20) 80%,
+      rgba(4, 4, 5, 0)  100%);
+  }
+}
 
 /* Where the blur is unavailable the tint is carrying the whole job, so lean on
    it harder — still a fade to nothing, just a denser start. */
@@ -779,6 +798,10 @@ p { text-wrap: pretty; }
   background: linear-gradient(180deg, rgba(246,226,122,.22), transparent 72%);
   filter: blur(28px);
   transform-origin: top center;
+  /* These three sweep for the life of the page. Without a layer of their own
+     the 28px blur is re-gathered on every frame of that animation; with one
+     it is drawn once and the GPU only moves the result. */
+  will-change: transform;
 }
 .beam--1 { left: 12%; animation: sweep 11s var(--ease-in-out) infinite alternate; }
 .beam--2 { left: 46%; animation: sweep 14s var(--ease-in-out) -3s infinite alternate-reverse; opacity: .7; }
@@ -1156,7 +1179,7 @@ p { text-wrap: pretty; }
    down so a heading can sit over them; moving footage is the whole point of
    the tile, so it is held much closer to its own colour. */
 .tile video {
-  filter: grayscale(.12) brightness(.66);
+  filter: brightness(.66);
 }
 .tile::after {
   content: "";
@@ -1168,7 +1191,7 @@ p { text-wrap: pretty; }
 }
 .tile:hover { border-color: var(--line); transform: translateY(-6px); }
 .tile:hover img { transform: scale(1.12); filter: grayscale(.1) brightness(.55); }
-.tile:hover video { transform: scale(1.06); filter: grayscale(0) brightness(.82); }
+.tile:hover video { transform: scale(1.06); filter: brightness(.82); }
 .tile:hover::after { background: linear-gradient(180deg, rgba(4,4,5,.1) 0%, rgba(20,14,2,.72) 60%, rgba(4,4,5,.94) 100%); }
 
 .tile__kicker {
@@ -2326,10 +2349,13 @@ main { position: relative; z-index: 2; }
   aspect-ratio: 9 / 16;
   object-fit: cover;
   background: var(--ink);
-  filter: saturate(1.05) contrast(1.04) brightness(.86);
+  /* Every function in this chain is re-applied to every decoded frame of
+     every playing clip. The 5% saturation and 4% contrast were not worth
+     that on their own, let alone three at a time next to two other reels. */
+  filter: brightness(.86);
   transition: filter .6s var(--ease), transform .9s var(--ease-out);
 }
-.reel:hover .reel__video { filter: saturate(1.1) contrast(1.05) brightness(1); transform: scale(1.03); }
+.reel:hover .reel__video { filter: brightness(1); transform: scale(1.03); }
 
 .reel__cap {
   position: absolute;

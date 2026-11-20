@@ -213,19 +213,42 @@
     }, 120);
 
     function finish() {
+      if (el.dataset.done) return;
+      el.dataset.done = '1';
       if (bar) bar.style.width = '100%';
+      clearInterval(tick);
       setTimeout(function () {
         el.classList.add('is-done');
         document.body.classList.add('is-loaded');
         document.dispatchEvent(new CustomEvent('site:loaded'));
         setTimeout(function () { el.remove(); }, 800);
-      }, 320);
+      }, 120);
     }
 
-    if (document.readyState === 'complete') { setTimeout(finish, 420); }
-    else { on(window, 'load', function () { setTimeout(finish, 420); }); }
-    // hard fallback so the site never stays behind the curtain
-    setTimeout(function () { if (!el.classList.contains('is-done')) finish(); }, 4200);
+    /* The curtain used to wait for window.load - every stylesheet, font and
+       in-view image - and then sit there for another 740ms of deliberate
+       padding. On a slow connection that reads as a frozen site. It now
+       lifts as soon as the document is parsed and the fonts have settled,
+       whichever is later, and the fallback is short enough that nobody
+       stares at it. */
+    function ready() {
+      /* Fonts are the one thing worth holding the curtain for: the display
+         face lands late and reflows every heading under it, which is exactly
+         the lurch a preloader exists to hide. Images are not - they fade in
+         on their own and the page is readable without them. */
+      var fonts = document.fonts && document.fonts.ready;
+      if (fonts && typeof fonts.then === 'function') {
+        fonts.then(function () { setTimeout(finish, 80); }, function () { finish(); });
+      } else {
+        setTimeout(finish, 80);
+      }
+    }
+
+    if (document.readyState === 'loading') { on(document, 'DOMContentLoaded', ready); }
+    else { ready(); }
+
+    // A font that never arrives must not hold the page hostage.
+    setTimeout(finish, 1800);
   });
 
   /* ==================================================================
@@ -238,23 +261,39 @@
 
     var mx = -100, my = -100, rx = -100, ry = -100;
 
+    var chasing = false;
+
     on(document, 'mousemove', function (e) {
       mx = e.clientX; my = e.clientY;
       dot.style.transform = 'translate(' + (mx - 2.5) + 'px,' + (my - 2.5) + 'px)';
       if (!ring.classList.contains('is-active')) {
         ring.classList.add('is-active'); dot.classList.add('is-active');
       }
+      chase();
     });
     on(document, 'mouseleave', function () {
       ring.classList.remove('is-active'); dot.classList.remove('is-active');
     });
 
-    (function loop() {
-      rx += (mx - rx) * 0.17;
-      ry += (my - ry) * 0.17;
+    /* The ring eases towards the pointer, so it needs a frame loop only while
+       it still has ground to cover. It used to run for the life of the page
+       whether the mouse moved or not, and because the ring is painted with
+       mix-blend-mode the compositor had to re-blend it against the page on
+       every one of those frames. Now it stops the moment it has caught up. */
+    function chase() {
+      if (chasing) return;
+      chasing = true;
+      requestAnimationFrame(step);
+    }
+
+    function step() {
+      var dx = mx - rx, dy = my - ry;
+      rx += dx * 0.17;
+      ry += dy * 0.17;
       ring.style.transform = 'translate(' + (rx - 17) + 'px,' + (ry - 17) + 'px)';
-      requestAnimationFrame(loop);
-    })();
+      if (Math.abs(dx) < 0.15 && Math.abs(dy) < 0.15) { chasing = false; return; }
+      requestAnimationFrame(step);
+    }
 
     var hoverSel = 'a, button, .tile, .gallery__item, .package, input, select, textarea, label, .tab, .dots button';
     on(document, 'mouseover', function (e) {
@@ -273,19 +312,56 @@
     var prog = $('.scroll-progress');
     var top  = $('.fab--top');
 
-    function onScroll() {
-      var y = window.scrollY || document.documentElement.scrollTop;
-      var h = document.documentElement.scrollHeight - window.innerHeight;
+    /* scrollHeight cannot be read without the browser settling the layout
+       first, so asking for it inside the scroll handler forced a full
+       re-layout on every scroll event - several times a frame on a trackpad.
+       It only changes when the page does, so it is measured on the events
+       that can change it and cached in between. */
+    var docH = 0;
 
-      if (prog) prog.style.width = (h > 0 ? clamp(y / h, 0, 1) * 100 : 0) + '%';
+    function measure() {
+      docH = document.documentElement.scrollHeight - window.innerHeight;
+      paint();
+    }
+
+    function paint() {
+      ticking = false;
+      var y = window.scrollY || document.documentElement.scrollTop;
+
+      if (prog) prog.style.width = (docH > 0 ? clamp(y / docH, 0, 1) * 100 : 0) + '%';
       // The bar stays put the whole way down the page and simply condenses
       // once you leave the top, so Reserve a table is always one click away.
       if (head) head.classList.toggle('is-stuck', y > 40);
       if (top) top.classList.toggle('is-shown', y > 700);
     }
 
-    on(window, 'scroll', onScroll, { passive: true });
-    onScroll();
+    var ticking = false;
+
+    on(window, 'scroll', function () {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(paint);
+    }, { passive: true });
+
+    var measureT;
+    function remeasure() {
+      clearTimeout(measureT);
+      measureT = setTimeout(measure, 150);
+    }
+
+    on(window, 'resize', remeasure);
+    on(window, 'load', measure);
+    on(document, 'site:loaded', measure);
+
+    /* The page can also change height on its own - a gallery filter hiding
+       rows, an accordion opening - and none of those fire resize. Watching
+       the body catches them, so the progress bar cannot drift out of step
+       with a document it is no longer measuring every frame. */
+    if (typeof ResizeObserver === 'function') {
+      try { new ResizeObserver(remeasure).observe(document.body); } catch (e) {}
+    }
+
+    measure();
 
     on(top, 'click', function () {
       window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
@@ -406,8 +482,12 @@
     if (!ctx) { cv.style.display = 'none'; return; }
     var parts = [], w = 0, h = 0, raf;
 
+    /* Specks of light a pixel and a half across do not need a retina
+         backing store, and the canvas covers the whole viewport: at devicePixelRatio
+         2 that is four times the fill of a 1x buffer, cleared and repainted
+         on every single frame, over everything else on the page. */
     function size() {
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       w = cv.width = Math.floor(window.innerWidth * dpr);
       h = cv.height = Math.floor(window.innerHeight * dpr);
       cv.style.width = window.innerWidth + 'px';
@@ -433,7 +513,15 @@
       }
     }
 
-    function frame() {
+    /* Drifting dust at 30fps is indistinguishable from drifting dust at 60,
+       and it leaves every other frame free for the things that do need one. */
+    var last = 0;
+
+    function frame(now) {
+      raf = requestAnimationFrame(frame);
+      if (now - last < 32) return;
+      last = now || 0;
+
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
       for (var i = 0; i < parts.length; i++) {
         var p = parts[i];
@@ -447,15 +535,29 @@
         ctx.fillStyle = 'rgba(212,175,55,' + alpha.toFixed(3) + ')';
         ctx.fill();
       }
-      raf = requestAnimationFrame(frame);
     }
 
     size();
     frame();
-    on(window, 'resize', size);
+
+    /* A phone fires resize every time the address bar slides away. Rebuilding
+       the whole field for that - a fresh backing store and a fresh set of
+       particles, mid-scroll - is work nobody asked for, so a height-only
+       change is ignored and the rest is debounced. */
+    var lastW = window.innerWidth, lastH = window.innerHeight, resizeT;
+
+    on(window, 'resize', function () {
+      if (window.innerWidth === lastW && Math.abs(window.innerHeight - lastH) < 140) return;
+      clearTimeout(resizeT);
+      resizeT = setTimeout(function () {
+        lastW = window.innerWidth; lastH = window.innerHeight;
+        size();
+      }, 200);
+    });
+
     on(document, 'visibilitychange', function () {
-      if (document.hidden) { cancelAnimationFrame(raf); }
-      else { raf = requestAnimationFrame(frame); }
+      cancelAnimationFrame(raf);
+      if (!document.hidden) { last = 0; raf = requestAnimationFrame(frame); }
     });
   });
 
@@ -1588,14 +1690,29 @@
      ================================================================== */
   safe('tilt', function () {
     if (isTouch || reduceMotion) return;
+    /* A gaming mouse reports hundreds of times a second. Measuring the card
+       and writing a transform on each of those reports is hundreds of layout
+       reads and style writes a second for an effect the screen can only show
+       sixty times. The card is measured once on the way in, and the transform
+       is written once a frame. */
     $$('[data-tilt]').forEach(function (el) {
+      var box = null, queued = false, px = 0, py = 0;
+
+      on(el, 'mouseenter', function () { box = el.getBoundingClientRect(); });
+
       on(el, 'mousemove', function (e) {
-        var r = el.getBoundingClientRect();
-        var px = (e.clientX - r.left) / r.width - 0.5;
-        var py = (e.clientY - r.top) / r.height - 0.5;
-        el.style.transform = 'perspective(900px) rotateY(' + (px * 5).toFixed(2) + 'deg) rotateX(' + (-py * 5).toFixed(2) + 'deg) translateY(-6px)';
+        if (!box) box = el.getBoundingClientRect();
+        px = (e.clientX - box.left) / box.width - 0.5;
+        py = (e.clientY - box.top) / box.height - 0.5;
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(function () {
+          queued = false;
+          el.style.transform = 'perspective(900px) rotateY(' + (px * 5).toFixed(2) + 'deg) rotateX(' + (-py * 5).toFixed(2) + 'deg) translateY(-6px)';
+        });
       });
-      on(el, 'mouseleave', function () { el.style.transform = ''; });
+
+      on(el, 'mouseleave', function () { box = null; el.style.transform = ''; });
     });
   });
 
