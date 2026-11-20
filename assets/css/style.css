@@ -2318,19 +2318,6 @@ main { position: relative; z-index: 2; }
   gap: clamp(.9rem, 2vw, 1.5rem);
 }
 
-/* Fewer than three reels. Left in the same grid so they inherit every reel
-   style, but each column is held to 300px and the row is centred: one clip
-   sits in the middle instead of hugging the left edge, two sit side by side,
-   and neither is stretched — a 9:16 clip spread across half a desktop
-   screen is a very tall video. */
-.reels--inset {
-  grid-template-columns: repeat(auto-fit, minmax(0, 300px));
-  justify-content: center;
-  max-width: 640px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 
 .reel {
   position: relative;
