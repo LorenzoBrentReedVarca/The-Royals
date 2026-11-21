@@ -1466,6 +1466,14 @@
      ================================================================== */
   safe('simpleForms', function () {
     $$('form[data-simple-form]').forEach(function (form) {
+      /* Two forms share this handler now - the contact form and the event
+         enquiry - and they answer to different routes and different inboxes.
+         The route is named on the form; the inbox is the server's business
+         and is never sent from here, because a form that posts its own
+         destination is an open relay with extra steps. */
+      var endpoint = form.getAttribute('data-endpoint') || '/api/contact';
+      var noun     = form.getAttribute('data-noun') || 'message';
+
       wireLiveValidation(form);
       on(form, 'submit', function (e) {
         e.preventDefault();
@@ -1500,7 +1508,7 @@
           );
         }
 
-        fetch('/api/contact', {
+        fetch(endpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1516,7 +1524,7 @@
           restore();
           if (res.ok) {
             showNote(form, 'ok',
-              '<strong>Thank you — your message is on its way.</strong><br>' +
+              '<strong>Thank you — your ' + noun + ' is on its way.</strong><br>' +
               'Our team replies within a few hours during opening times (' + hoursLabel(loc) + ', Dubai). ' +
               'For anything urgent, WhatsApp us on <a href="https://wa.me/' + loc.whatsapp + '" style="color:var(--gold)">' + loc.phone + '</a>.'
             );
@@ -1524,10 +1532,10 @@
             return;
           }
           return res.json().then(function (d) { return d; }, function () { return {}; })
-            .then(function (data) { reachUs(data.error || 'The message could not be sent.'); });
+            .then(function (data) { reachUs(data.error || 'The ' + noun + ' could not be sent.'); });
         }).catch(function () {
           restore();
-          reachUs('The message could not be sent.');
+          reachUs('The ' + noun + ' could not be sent.');
         });
       });
     });

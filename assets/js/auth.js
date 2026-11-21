@@ -7,10 +7,11 @@
      account.html       sign in, create an account, recover a forgotten
                         password, and the signed-in card
 
-   wireBooking() below is dead. It filled the booking form in for a guest
+   wireBooking() below fills the event enquiry form in for a guest
    who was already signed in and remembered their phone number, but
-   reservations.html was removed when bookings moved to WhatsApp. It is
-   guarded and never runs, and is kept for whenever a booking form returns.
+   who is signed in - the email and number they already gave us - so the
+   second enquiry is a dropdown and a button. It is guarded, so it costs
+   nothing on the pages that carry no such form.
 
    ------------------------------------------------------------------------
    THE CONNECTION
@@ -41,7 +42,7 @@
   var on = function (el, ev, fn) { if (el) el.addEventListener(ev, fn); };
 
   var root    = $('[data-auth]');            // the account page
-  var booking = $('#reservation-form');      // the reservations page
+  var booking = $('#event-enquiry-form');    // the event enquiry page
   if (!root && !booking) return;
 
   var configured = !!(SUPABASE.url && SUPABASE.anonKey);

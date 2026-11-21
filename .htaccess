@@ -54,20 +54,24 @@ RewriteRule (^|/)\. - [R=404,L]
 RewriteRule ^(docs|supabase)/ - [R=404,L]
 RewriteRule \.(md|sql|toml|log)$ - [R=404,L]
 
-# Nothing under /api is public except the one endpoint. This also stops
-# api/contact.js, the Vercel version kept for now, being served as source.
+# Nothing under /api is public except the two endpoints. This also stops
+# the .js versions, kept for Vercel, being served as source.
 RewriteCond %{REQUEST_URI} ^/api/
 RewriteCond %{REQUEST_URI} !^/api/contact/?$
 RewriteCond %{REQUEST_URI} !^/api/contact\.php$
+RewriteCond %{REQUEST_URI} !^/api/booking/?$
+RewriteCond %{REQUEST_URI} !^/api/booking\.php$
 RewriteRule ^ - [R=404,L]
 
 # --------------------------------------------------------------------------
-# 3. The contact form
+# 3. The forms
 #
-# Kept at /api/contact, without the extension, so the URL survived the move
-# from a Vercel function to a PHP script and the JavaScript did not change.
+# Kept at /api/contact and /api/booking, without the extension, so the URLs
+# survived the move from Vercel functions to PHP scripts and the JavaScript
+# did not change.
 # --------------------------------------------------------------------------
 RewriteRule ^api/contact/?$ api/contact.php [L]
+RewriteRule ^api/booking/?$ api/booking.php [L]
 
 # --------------------------------------------------------------------------
 # 4. Clean URLs
@@ -95,7 +99,6 @@ RewriteRule ^(.+)$ $1.html [L]
 # 5. Vanity paths, as temporary redirects — the destinations may yet change
 # --------------------------------------------------------------------------
 RewriteRule ^book/?$ https://wa.me/971542921623 [R=302,L]
-RewriteRule ^reservations/?$ https://wa.me/971542921623 [R=302,L]
 RewriteRule ^whatsapp/?$ https://wa.me/971542921623 [R=302,L]
 
 </IfModule>
