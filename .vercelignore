@@ -11,5 +11,12 @@
 docs
 supabase
 .htaccess
-api/contact.php
 royals-config.example.php
+
+# The PHP endpoints are the Hostinger half of each route and must not be
+# uploaded here. Vercel routes a function by its path without the extension,
+# so api/booking.php and api/booking.js both claim /api/booking and the build
+# stops with conflicting_file_path. Whenever a PHP twin is added, its name
+# belongs on this list in the same commit.
+api/contact.php
+api/booking.php
