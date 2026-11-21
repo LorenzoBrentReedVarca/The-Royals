@@ -23,7 +23,15 @@
  */
 
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
-const SENDER = 'The Royals <no-reply@theroyalseminentlounge.com>';
+
+/* Event enquiries are sent as marketing@ and land in marketing@: the thread
+   sits in that mailbox under its own name rather than arriving from a
+   no-reply nobody recognises. Reply-To is still the guest, so hitting reply
+   reaches them and not this mailbox talking to itself. Any address on the
+   domain may be used as From - the domain, not the mailbox, is what Resend
+   verified - so this does not depend on the mailbox existing to send; it
+   depends on it existing to receive. */
+const SENDER = 'The Royals Events <marketing@theroyalseminentlounge.com>';
 const DEFAULT_INBOX = 'marketing@theroyalseminentlounge.com';
 
 /* The occasions offered by the <select> on reservations.html. Anything else
