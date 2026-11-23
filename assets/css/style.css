@@ -629,6 +629,15 @@ p { text-wrap: pretty; }
 
 .header__actions { display: flex; align-items: center; gap: .9rem; flex: none; }
 
+/* btn--ghost carries a backdrop-filter, which is cheap on a button that
+   scrolls past and expensive on one riveted to a bar that never leaves the
+   screen: the blur would be re-gathered on every frame of every scroll, for
+   an effect already buried under the header's own tint. */
+.header__actions .btn--ghost {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
 /* Live open/closed pill */
 .status-pill {
   display: inline-flex;
@@ -2118,11 +2127,24 @@ main { position: relative; z-index: 2; }
   .g-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
+/* Two buttons and the open/closed pill do not all fit beside five nav links
+   on a small laptop: the gold button ends up flush against the edge with a
+   fraction of the gutter the logo gets. The pill is the one piece that can
+   go without losing a destination - it says what the status bar at the foot
+   of the page says - so it leaves early, and the buttons keep their margin.
+   Below 980 the nav and both buttons give way to the drawer anyway. */
+@media (max-width: 1240px) {
+  .header__actions { gap: .6rem; }
+  .status-pill { display: none; }
+}
+
 @media (max-width: 980px) {
   :root { --nav-h: 74px; }
   .nav { display: none; }
   .burger { display: block; }
-  .header__actions .btn--gold { display: none; }
+  /* Both header buttons go, not just the gold one - the drawer carries
+     every destination below this width. */
+  .header__actions .btn { display: none; }
   .status-pill { display: none; }
 
   .split { grid-template-columns: 1fr; gap: 2.25rem; }
