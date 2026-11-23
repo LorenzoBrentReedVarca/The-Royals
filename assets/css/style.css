@@ -1368,6 +1368,10 @@ p { text-wrap: pretty; }
   grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
   grid-auto-rows: 210px;
   gap: 12px;
+  /* The clips are tall tiles and the remaining stills are short ones. Without
+     dense packing a short tile cannot back-fill the hole beside a tall one,
+     and a filtered grid ends up with gaps in it. */
+  grid-auto-flow: dense;
 }
 .gallery__item {
   position: relative;

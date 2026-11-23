@@ -1900,11 +1900,28 @@
     // Without IntersectionObserver the poster frames carry the section.
     if (!('IntersectionObserver' in window) || dataSaver()) return;
 
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        var v = en.target;
+    /* A row of three reels could all play and nobody noticed. A gallery of
+       thirteen cannot: eight were decoding at once and eight files were on
+       the wire before a visitor had chosen anything to look at. Only the few
+       nearest the middle of the screen earn a decode; the rest hold their
+       poster, which is a frame of the same clip, so the grid still reads as
+       moving without asking the machine to move all of it. */
+    var MAX_PLAYING = 4;
+    var live = [];
+
+    function middle(v) {
+      var r = v.getBoundingClientRect();
+      return Math.abs(r.top + r.height / 2 - window.innerHeight / 2);
+    }
+
+    /* Ranked only when the observer fires - when a tile crosses in or out -
+       so this never runs from a scroll handler. */
+    function rank() {
+      live.sort(function (a, b) { return middle(a) - middle(b); });
+
+      live.forEach(function (v, i) {
         var card = v.closest('.reel');
-        if (en.isIntersecting) {
+        if (i < MAX_PLAYING) {
           attachSource(v);
           if (!reduceMotion) { tryPlay(v); if (card) card.classList.add('is-playing'); }
         } else {
@@ -1912,6 +1929,23 @@
           if (card) card.classList.remove('is-playing');
         }
       });
+    }
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        var v = en.target;
+        var at = live.indexOf(v);
+
+        if (en.isIntersecting) {
+          if (at < 0) live.push(v);
+        } else {
+          if (at > -1) live.splice(at, 1);
+          v.pause();
+          var card = v.closest('.reel');
+          if (card) card.classList.remove('is-playing');
+        }
+      });
+      rank();
     }, { threshold: 0.35 });
 
     reels.forEach(function (v) { io.observe(v); });
