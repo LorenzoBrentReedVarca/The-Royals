@@ -332,27 +332,23 @@ p { text-wrap: pretty; }
   font-weight: 600;
   box-shadow: 0 10px 34px -14px rgba(212,175,55,.7);
 }
-/* The same move as btn--ghost: a wipe opening from the left, scaleX on the
-   same curve over the same half second, so the two buttons standing side by
-   side in the header read as one set rather than two components that happen
-   to be adjacent. Only the colour differs, because it has to - ghost fills
-   gold over dark, and gold has no darker state to fill into without turning
-   the primary button into something else on hover, so it brightens instead. */
+/* A wipe cannot be seen filling gold onto gold, which is why the header's
+   pair are both outlined and this is left as it was: a shine travelling
+   across a solid button, which is the one thing that does read on one. */
 .btn--gold::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-bright) 40%, var(--gold-pale) 60%, var(--gold-bright) 100%);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform .5s var(--ease-out);
+  background: linear-gradient(110deg, transparent 20%, rgba(255,255,255,.55) 48%, transparent 76%);
+  transform: translateX(-120%);
+  transition: transform .8s var(--ease-out);
 }
 .btn--gold:hover {
   transform: translateY(-3px);
   box-shadow: 0 18px 46px -14px rgba(212,175,55,.8);
 }
-.btn--gold:hover::before { transform: scaleX(1); }
+.btn--gold:hover::before { transform: translateX(120%); }
 
 /* Outline */
 .btn--ghost {
