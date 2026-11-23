@@ -81,6 +81,23 @@ const EMAIL_RX = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
    shapes a guest might type: 050 123 4567, +971 50 123 4567, (050) 1234567. */
 const digitsIn = (s) => (String(s).match(/\d/g) || []).length;
 
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
+
+/**
+ * "2026-12-12" reads as "Saturday 12 December 2026" in the email. An events
+ * team scanning an inbox should not have to decode a date, and the weekday
+ * is half the answer on its own - a Tuesday enquiry is a different
+ * conversation from a Saturday one.
+ */
+function readableDate(iso) {
+  if (!ISO_DATE.test(iso)) return '';
+  const d = new Date(iso + 'T00:00:00Z');
+  if (Number.isNaN(d.getTime())) return '';
+  return d.toLocaleDateString('en-GB', {
+    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC'
+  });
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -97,8 +114,9 @@ module.exports = async (req, res) => {
   const phone = clean(body.phone, LIMITS.phone);
   const details = clean(body.message, LIMITS.message);
   const subject = clean(body.subject, 80);
+  const when = readableDate(clean(body.date, 10));
 
-  if (!EMAIL_RX.test(email) || digitsIn(phone) < 7) {
+  if (!EMAIL_RX.test(email) || digitsIn(phone) < 7 || !when) {
     return res.status(400).json({ error: 'Please check the highlighted fields.' });
   }
 
@@ -127,6 +145,7 @@ module.exports = async (req, res) => {
 
   const rows = [
     ['Occasion', occasion],
+    ['Date', when],
     ['Phone', phone],
     ['Email', email]
   ];
@@ -170,7 +189,7 @@ module.exports = async (req, res) => {
         from: SENDER,
         to: inbox.split(',').map((a) => a.trim()).filter(Boolean),
         reply_to: email,
-        subject: `Event enquiry — ${occasion}`,
+        subject: `Event enquiry — ${occasion}, ${when}`,
         html,
         text
       })

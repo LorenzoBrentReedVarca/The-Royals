@@ -80,6 +80,24 @@ function digits_in(string $value): int
 }
 
 /**
+ * "2026-12-12" reads as "Saturday 12 December 2026" in the email. An events
+ * team scanning an inbox should not have to decode a date, and the weekday
+ * is half the answer on its own. Returns '' for anything that is not a real
+ * calendar date, which is what the caller treats as a failed field.
+ */
+function readable_date(string $iso): string
+{
+    if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $iso) !== 1) {
+        return '';
+    }
+    $d = DateTimeImmutable::createFromFormat('!Y-m-d', $iso, new DateTimeZone('UTC'));
+    if ($d === false || $d->format('Y-m-d') !== $iso) {
+        return '';
+    }
+    return $d->format('l j F Y');
+}
+
+/**
  * Reads a setting from royals-config.php, falling back to the environment so
  * the same file runs unchanged on a host where variables are set properly.
  */
@@ -203,8 +221,9 @@ $email   = clean($body['email'] ?? '', LIMIT_EMAIL);
 $phone   = clean($body['phone'] ?? '', LIMIT_PHONE);
 $details = clean($body['message'] ?? '', LIMIT_MESSAGE);
 $subject = clean($body['subject'] ?? '', 80);
+$when    = readable_date(clean($body['date'] ?? '', 10));
 
-if (!filter_var($email, FILTER_VALIDATE_EMAIL) || digits_in($phone) < 7) {
+if (!filter_var($email, FILTER_VALIDATE_EMAIL) || digits_in($phone) < 7 || $when === '') {
     respond(400, ['error' => 'Please check the highlighted fields.']);
 }
 
@@ -236,6 +255,7 @@ if ($key === '') {
 
 $rows = [
     'Occasion' => $occasion,
+    'Date'     => $when,
     'Phone'    => $phone,
     'Email'    => $email,
 ];
@@ -284,7 +304,7 @@ $payload = json_encode([
     'from'     => SENDER,
     'to'       => $recipients,
     'reply_to' => $email,
-    'subject'  => 'Event enquiry — ' . $occasion,
+    'subject'  => 'Event enquiry — ' . $occasion . ', ' . $when,
     'html'     => $html,
     'text'     => $text,
 ]);

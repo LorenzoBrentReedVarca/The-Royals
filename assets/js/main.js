@@ -1150,7 +1150,11 @@
     if (input.name === 'name' && val.length < 2) {
       setError(field, 'Please enter your full name.'); return false;
     }
-    if (input.name === 'message' && val.length < 10) {
+    /* Only worth insisting on where the message IS the enquiry. The event
+       form has an optional detail box under the same name, and holding that
+       to ten characters refused the whole form over a field nobody had to
+       fill in - the guest is told to write more in a box marked optional. */
+    if (input.name === 'message' && input.hasAttribute('required') && val.length < 10) {
       setError(field, 'Please add a little more detail (10 characters minimum).'); return false;
     }
     clearError(field);
@@ -1515,6 +1519,7 @@
             name:    value('name'),
             email:   value('email'),
             phone:   value('phone'),
+            date:    value('date'),
             subject: value('subject'),
             message: value('message'),
             company: value('company'),
@@ -1538,6 +1543,24 @@
           reachUs('The ' + noun + ' could not be sent.');
         });
       });
+    });
+  });
+
+  /* ==================================================================
+     18b. DATE FLOOR — a date field cannot offer a night already gone
+     ================================================================== */
+  safe('dateFloor', function () {
+    var inputs = $$('input[type="date"][data-floor-today]');
+    if (!inputs.length) return;
+
+    /* The venue's clock, not the visitor's: someone enquiring from London
+       late on a Friday is still looking at Friday in Dubai. */
+    var p = dubaiParts();
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    var today = p.year + '-' + pad(p.month) + '-' + pad(p.day);
+
+    inputs.forEach(function (el) {
+      if (!el.getAttribute('min')) el.setAttribute('min', today);
     });
   });
 

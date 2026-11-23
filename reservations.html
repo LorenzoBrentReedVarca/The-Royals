@@ -230,17 +230,24 @@
               </div>
             </div>
 
-            <div class="field">
-              <label for="r-event">What are you hosting? <span class="req">*</span></label>
-              <select id="r-event" name="subject" required>
-                <option value="" disabled selected>Choose an occasion</option>
-                <option>Birthday</option>
-                <option>Corporate event</option>
-                <option>Wedding or engagement</option>
-                <option>Private party</option>
-                <option>Something else</option>
-              </select>
-              <span class="field__error"></span>
+            <div class="form__grid">
+              <div class="field">
+                <label for="r-event">What are you hosting? <span class="req">*</span></label>
+                <select id="r-event" name="subject" required>
+                  <option value="" disabled selected>Choose an occasion</option>
+                  <option>Birthday</option>
+                  <option>Corporate event</option>
+                  <option>Wedding or engagement</option>
+                  <option>Private party</option>
+                  <option>Something else</option>
+                </select>
+                <span class="field__error"></span>
+              </div>
+              <div class="field">
+                <label for="r-date">Date of the event <span class="req">*</span></label>
+                <input type="date" id="r-date" name="date" data-floor-today required>
+                <span class="field__error"></span>
+              </div>
             </div>
 
             <div class="field">
