@@ -1521,6 +1521,7 @@
             phone:   value('phone'),
             date:    value('date'),
             subject: value('subject'),
+            occasionOther: value('occasionOther'),
             message: value('message'),
             company: value('company'),
             consent: !!(form.elements.consent && form.elements.consent.checked)
@@ -1561,6 +1562,43 @@
 
     inputs.forEach(function (el) {
       if (!el.getAttribute('min')) el.setAttribute('min', today);
+    });
+  });
+
+  /* ==================================================================
+     18c. SOMETHING ELSE — a choice the guest can type out
+     ================================================================== */
+  safe('revealOnChoice', function () {
+    $$('select[data-reveals]').forEach(function (sel) {
+      var target = $(sel.getAttribute('data-reveals'));
+      if (!target) return;
+
+      var when  = sel.getAttribute('data-reveals-on') || '';
+      var input = $('input, textarea', target);
+
+      /* Hiding it is not enough on its own: validateScope walks every input
+         in the form, and would hold an invisible box to its required
+         attribute - refusing the whole form over a field nobody can see.
+         Disabling takes it out of that walk, and enabling is what makes it
+         count, so the two always move together. */
+      function sync() {
+        var open = sel.value === when;
+        target.hidden = !open;
+        if (!input) return;
+
+        if (open) {
+          input.disabled = false;
+          input.setAttribute('required', '');
+        } else {
+          input.disabled = true;
+          input.removeAttribute('required');
+          input.value = '';
+          clearError(target);
+        }
+      }
+
+      on(sel, 'change', sync);
+      sync();
     });
   });
 

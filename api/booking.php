@@ -38,7 +38,7 @@ const OCCASIONS = [
     'Corporate event',
     'Wedding or engagement',
     'Private party',
-    'Something else',
+    'Others',
 ];
 
 const LIMIT_EMAIL   = 254;
@@ -222,12 +222,20 @@ $phone   = clean($body['phone'] ?? '', LIMIT_PHONE);
 $details = clean($body['message'] ?? '', LIMIT_MESSAGE);
 $subject = clean($body['subject'] ?? '', 80);
 $when    = readable_date(clean($body['date'] ?? '', 10));
+/* Newlines stripped before this ever reaches a Subject header: a header is
+   line-delimited, and free text is the one field a stranger controls. */
+$other   = trim((string) preg_replace('/[\r\n]+/', ' ', clean($body['occasionOther'] ?? '', 80)));
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL) || digits_in($phone) < 7 || $when === '') {
     respond(400, ['error' => 'Please check the highlighted fields.']);
 }
 
-$occasion = in_array($subject, OCCASIONS, true) ? $subject : 'Something else';
+/* Others is a prompt, not an answer. When the guest has typed what the
+   night actually is, that is what the events team should read. */
+$occasion = in_array($subject, OCCASIONS, true) ? $subject : 'Others';
+if ($occasion === 'Others' && $other !== '') {
+    $occasion = $other;
+}
 
 $forwarded = (string) ($_SERVER['HTTP_X_FORWARDED_FOR'] ?? '');
 $parts     = explode(',', $forwarded);

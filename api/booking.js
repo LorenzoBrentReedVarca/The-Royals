@@ -41,7 +41,7 @@ const OCCASIONS = [
   'Corporate event',
   'Wedding or engagement',
   'Private party',
-  'Something else'
+  'Others'
 ];
 
 const LIMITS = { email: 254, phone: 40, message: 4000 };
@@ -114,13 +114,21 @@ module.exports = async (req, res) => {
   const phone = clean(body.phone, LIMITS.phone);
   const details = clean(body.message, LIMITS.message);
   const subject = clean(body.subject, 80);
+  /* Newlines stripped before this ever reaches a Subject header: a header
+     is line-delimited, and free text is the one field a stranger controls. */
+  const other = clean(body.occasionOther, 80).replace(/[\r\n]+/g, ' ').trim();
   const when = readableDate(clean(body.date, 10));
 
   if (!EMAIL_RX.test(email) || digitsIn(phone) < 7 || !when) {
     return res.status(400).json({ error: 'Please check the highlighted fields.' });
   }
 
-  const occasion = OCCASIONS.includes(subject) ? subject : 'Something else';
+  /* Others is a prompt, not an answer. When the guest has typed what the
+     night actually is, that is what the events team should read - both in
+     the table and in the subject line. The label is only a fallback for a
+     request that arrives without it. */
+  let occasion = OCCASIONS.includes(subject) ? subject : 'Others';
+  if (occasion === 'Others' && other) occasion = other;
 
   const ip =
     (req.headers['x-forwarded-for'] || '').split(',')[0].trim() ||

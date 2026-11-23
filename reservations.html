@@ -233,13 +233,14 @@
             <div class="form__grid">
               <div class="field">
                 <label for="r-event">What are you hosting? <span class="req">*</span></label>
-                <select id="r-event" name="subject" required>
+                <select id="r-event" name="subject" required
+                        data-reveals="#r-other-field" data-reveals-on="Others">
                   <option value="" disabled selected>Choose an occasion</option>
                   <option>Birthday</option>
                   <option>Corporate event</option>
                   <option>Wedding or engagement</option>
                   <option>Private party</option>
-                  <option>Something else</option>
+                  <option>Others</option>
                 </select>
                 <span class="field__error"></span>
               </div>
@@ -248,6 +249,16 @@
                 <input type="date" id="r-date" name="date" data-floor-today required>
                 <span class="field__error"></span>
               </div>
+            </div>
+
+            <!-- Appears only when the occasion is Others. Disabled
+                 until then, so the form is never held to a box nobody can
+                 see. -->
+            <div class="field" id="r-other-field" hidden>
+              <label for="r-other">What kind of event is it? <span class="req">*</span></label>
+              <input type="text" id="r-other" name="occasionOther" maxlength="80"
+                     placeholder="e.g. album launch, graduation, farewell dinner" disabled>
+              <span class="field__error"></span>
             </div>
 
             <div class="field">
