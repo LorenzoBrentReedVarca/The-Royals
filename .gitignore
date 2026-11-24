@@ -27,3 +27,8 @@ royals-config.php
 # Camera originals. The web versions beside them are what ships; these are
 # 50MB each and would bloat the repository and the deploy for nothing.
 assets/video/Royals*.mp4
+# Camera and export originals. They are the source for the cut-down
+# clips beside them and are tens to hundreds of megabytes each; only
+# the encodes belong in the repository.
+assets/video/vertical royals*.mp4
+assets/video/Live Bollywood Show.mp4
